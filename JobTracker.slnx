@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="jobtracker.client/jobtracker.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="JobTracker.Server/JobTracker.Server.csproj" />
+</Solution>
