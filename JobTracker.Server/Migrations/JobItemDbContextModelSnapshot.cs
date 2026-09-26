@@ -30,8 +30,15 @@ namespace JobTracker.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly?>("Deadline")
+                    b.Property<DateOnly>("ApplyDate")
                         .HasColumnType("date");
+
+                    b.Property<DateOnly?>("ApplyDeadline")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan?>("EstimatedDestination")
                         .HasColumnType("time");
@@ -59,7 +66,7 @@ namespace JobTracker.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobItems", (string)null);
+                    b.ToTable("JobItems");
                 });
 #pragma warning restore 612, 618
         }
