@@ -1,14 +1,15 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace JobTracker.Server.Controllers
 {
 	[ApiController]
-	[Route("api/[controller]/")]
+	[Route("api/[controller]")]
 	public class JobItemController(JobItemDbContext context) : ControllerBase
 	{
-		JobItemDbContext _context = context; 
-		
+		readonly JobItemDbContext _context = context; 
+
 		[HttpGet]
 		public IActionResult Get()
 		{
@@ -18,43 +19,49 @@ namespace JobTracker.Server.Controllers
 		[HttpGet("{id}")]
 		public IActionResult Get(int id)
 		{
-			return Ok(_context.JobItems.Find(id));
+			JobItem? item = _context.JobItems.Find(id);
+			if (item == null) return NotFound();
+			return Ok(item);
 		}
 
 		[HttpPost]
-		public IActionResult Post(JobItem jI)
+		public async Task<IActionResult> Post([FromBody] JobItem jI)
 		{
-			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks.Length > 0 
+			if (String.IsNullOrWhiteSpace(jI?.Title) || (jI.Hyperlinks?.Length > 0 
 				&& jI.Hyperlinks.All(link => String.IsNullOrWhiteSpace(link))))
 			{
 				return StatusCode((int)HttpStatusCode.Forbidden);
 			}
 
-			_context.JobItems.Add(jI);
-			_context.SaveChangesAsync();
-			return Ok();
+			await _context.JobItems.AddAsync(jI);
+			await _context.SaveChangesAsync();
+			return CreatedAtAction(nameof(Get), new { id = jI.Id }, jI);
 		}
 
 		[HttpPut]
-		public IActionResult Put(JobItem jI)
+		public async Task<IActionResult> Put([FromBody] JobItem jI)
 		{
-			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks.Length > 0
+			if (jI == null || !await _context.JobItems.AnyAsync(i => i.Id == jI.Id)) return BadRequest();
+
+			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks?.Length > 0
 				&& jI.Hyperlinks.All(link => String.IsNullOrWhiteSpace(link))))
 			{
 				return StatusCode((int)HttpStatusCode.Forbidden);
 			}
 
 			_context.JobItems.Update(jI);
-			_context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
 			return Ok();
 		}
 
-		[HttpDelete("{id}")] 
-		public IActionResult Delete(int id)
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
 		{
-			JobItem toRemove = _context.JobItems.Where(jI => jI.Id == id).First();
-			_context.JobItems.Remove(toRemove);
-			_context.SaveChangesAsync();
+			JobItem? jI = _context.JobItems.FirstOrDefault(jI => jI.Id == id);
+			if (jI == null) return NotFound();
+
+			_context.JobItems.Remove(jI);
+			await _context.SaveChangesAsync();
 			return NoContent();
 		}
 	}

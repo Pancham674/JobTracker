@@ -59,7 +59,7 @@ namespace JobTracker.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobItems");
+                    b.ToTable("JobItems", (string)null);
                 });
 #pragma warning restore 612, 618
         }
