@@ -1,5 +1,9 @@
-﻿export default function App() {
+﻿import "./css/App.css";
+
+export default function App() {
     return ( 
-        <h1>Yo.</h1>
+        <div id="app">
+            <h1> Yo. This is futur e turture device called: j#b trackr </h1>
+        </div>
     );
 }
