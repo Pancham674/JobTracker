@@ -1,14 +1,21 @@
-import { type IJobItem } from "../Interfaces.ts";
+import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
 import "../css/JobList.css";
 
-export default function JobList({ items }: {items: IJobItem[] | undefined}) {
+export default function JobList({ items }: {items: IJobItem[]}) {
     return (
         <div id="job-grid">
-            <p>My name is job list/grid and these are my beatiful job iitems!</p>
             {items && items.map(i =>
                 <div key={i.id}  className="job-item"> 
-                    <p>{i.id}</p>
-                    <p>{i.title}</p>
+                    <div className="job-item-header">
+                        <p>{i.title}</p>
+                    </div>
+
+                    <div className="job-item-body">
+                        <p>{i.company}</p>
+                        <p>Status: {convertToStatusString(i.status)}</p>
+                        <p>Applied on: {new Date(i.applyDate).toLocaleDateString("en-GB")}</p>
+                        <p className="job-item-number">#{i.id}</p>
+                    </div>
                 </div>
             )}
         </div>

@@ -6,7 +6,7 @@ import "./components/NewJobItem.tsx";
 import "./components/JobList.tsx";
 import "./css/App.css";
 export default function App() {
-    const [jobItems, setJobItems] = useState<IJobItem>();
+    const [jobItems, setJobItems] = useState<IJobItem[]>([]);
 
     useEffect(() => {
         async function loadJobItems() {

@@ -18,9 +18,18 @@ export enum Status {
 	Interviewed,
 	Offer
 }
+export function convertToStatusString(value: number) {
+	const status = ["Waiting", "Declined", "Interviewed", "Offer"];
+	return status[value];
+}
 
 export enum WorkingModels {
 	OnSite,
 	Hybrid,
 	FullRemote
+}
+
+export function convertToWorkingModelsString(value: number) {
+	const workingModels = ["OnSite", "Hybrid", "FullRemote"];
+	return workingModels[value];
 }
