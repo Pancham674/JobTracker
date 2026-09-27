@@ -4,6 +4,11 @@ export function getAllJobItems() {
     return getData(BASE_URL, options);
 }
 
+export function getJobItem(id: number) {
+    const options: RequestInit = { method: 'GET'}
+    return getData(`${BASE_URL}/${id}`, options);
+}
+
 async function getData(url: string, options: RequestInit) {
     const response = await fetch(url, options);
     const data = await response.json();

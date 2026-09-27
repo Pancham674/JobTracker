@@ -29,7 +29,7 @@ export enum WorkingModels {
 	FullRemote
 }
 
-export function convertToWorkingModelsString(value: number) {
+export function convertToWorkingModels(value: number) {
 	const workingModels = ["OnSite", "Hybrid", "FullRemote"];
 	return workingModels[value];
 }

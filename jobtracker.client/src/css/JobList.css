@@ -1,8 +1,8 @@
 #job-grid {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));
     background-color: gray;
     margin: 2em 0;
+    display: grid;
     color: black;
     padding: 1em;
     gap: 1em;
@@ -11,13 +11,11 @@
 .job-item {
     border: 1px solid black;
     position: relative;
+    user-select: none;
     cursor: pointer;
     padding: 0.5em;
 }
 
-.job-item:hover {
-    
-}
 .job-item-header {
     justify-content: space-around;
     font-size: 1.5rem;
@@ -27,7 +25,11 @@
 
 .job-item-body {
     border-top: dashed 1px black;
+    padding: 0.5em 0 0 0.5em;
+    align-items: flex-start;
+    flex-direction: column;
     margin-top: 0.5em;
+    display: flex;
 }
 
 .job-item-number {
