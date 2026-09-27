@@ -1,5 +1,5 @@
 #job-grid {
-    grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
     background-color: gray;
     margin: 2em 0;
     display: grid;
@@ -12,6 +12,7 @@
     border: 1px solid black;
     position: relative;
     user-select: none;
+    min-width: 20em;
     cursor: pointer;
     padding: 0.5em;
 }
