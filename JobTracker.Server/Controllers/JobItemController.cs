@@ -27,9 +27,8 @@ namespace JobTracker.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] JobItem jI)
 		{
-			if (String.IsNullOrWhiteSpace(jI?.Title) || (jI.Hyperlinks?.Length > 0 
-				//&& jI.Hyperlinks.All(link => String.IsNullOrWhiteSpace(link))
-				))
+			if (String.IsNullOrWhiteSpace(jI?.Title) || (jI.Hyperlinks.Count > 0
+				&& jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value))))
 			{
 				return StatusCode((int)HttpStatusCode.Forbidden);
 			}
@@ -44,9 +43,8 @@ namespace JobTracker.Server.Controllers
 		{
 			if (jI == null || !await _context.JobItems.AnyAsync(i => i.Id == jI.Id)) return BadRequest();
 
-			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks?.Length > 0
-				//&& jI.Hyperlinks.All(link => String.IsNullOrWhiteSpace(link))
-				))
+			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks.Count > 0
+				&& jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value))))
 			{
 				return StatusCode((int)HttpStatusCode.Forbidden);
 			}
