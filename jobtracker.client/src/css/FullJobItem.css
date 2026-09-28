@@ -1,0 +1,51 @@
+#full-job-item {
+    flex-direction: column;
+    background: aliceblue;
+    display: flex;
+    margin: 1em 0;
+    padding: 2em;
+    color: black;
+}
+
+#full-job-item #header{
+    position: relative;
+    display: flex;
+}
+
+#full-job-item #title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+#full-job-item #id {
+    position: absolute;
+    right: 0;
+}
+
+#full-job-item #sub-header {
+    flex-direction: column;
+    margin: 0.5em 0;
+    display: flex;
+    gap: 0.5em;
+}
+
+#full-job-item .section {
+    justify-content: space-between;
+    display: flex;
+}
+
+#full-job-item #body {
+
+}
+
+#full-job-item #notes-header {
+
+}
+
+#full-job-item #notes {
+
+}
+
+#full-job-item #hyperlinks {
+
+}

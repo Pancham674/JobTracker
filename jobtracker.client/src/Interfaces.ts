@@ -1,15 +1,15 @@
 export interface IJobItem {
-	id: number,
-	title: string,
+	workingModels: WorkingModels,
+	hyperlinks: [string, string],
+	estimatedDestination: Date,
+	applyDeadline: Date,
+	location: string,
+	applyDate: Date,
 	company: string,
 	status: Status,
+	title: string,
 	notes: string,
-	workingModels: WorkingModels,
-	location: string,
-	estimatedDestination: Date,
-	applyDate: Date,
-	applyDeadline: Date,
-	hyperlinks: string[]
+	id: number,
 }
 
 export enum Status {
@@ -23,13 +23,14 @@ export function convertToStatusString(value: number) {
 	return status[value];
 }
 
+
 export enum WorkingModels {
 	OnSite,
 	Hybrid,
 	FullRemote
 }
 
-export function convertToWorkingModels(value: number) {
+export function convertToWorkingModelString(value: number) {
 	const workingModels = ["OnSite", "Hybrid", "FullRemote"];
 	return workingModels[value];
 }

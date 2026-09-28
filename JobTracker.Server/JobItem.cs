@@ -14,6 +14,6 @@ namespace JobTracker.Server
 		public TimeSpan? EstimatedDestination { get; set; }		//How long it'll take to arrive at the location.
 		public required DateOnly ApplyDate { get; set; } 
 		public DateOnly? ApplyDeadline { get; set; }	        //How long till the job gets taken down. 
-		public required string[] Hyperlinks { get; set;	}		//Can contain links to the company website, jobboard, etc.
+		public required Dictionary<string, string>[] Hyperlinks { get; set;	}		//Can contain links to the company website, jobboard, etc.
 	}
 }

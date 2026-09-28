@@ -1,7 +1,9 @@
-import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
+import { convertToStatusString, convertToWorkingModelString, type IJobItem } from "../Interfaces.ts";
 import { getJobItem } from "../services/api.ts";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import "../css/FullJobItem.css";
+
 export default function FullJobItem() {
     const [jobItem, setJobItem] = useState<IJobItem>();
     const jobId = Number(useParams().id);
@@ -9,8 +11,8 @@ export default function FullJobItem() {
     useEffect(() => {
         async function loadJobItem() {
             try {
-                const temp = await getJobItem(jobId);
-                setJobItem(temp);
+                const j0b = await getJobItem(jobId);
+                setJobItem(j0b);
             }
             catch (e) {
                 console.warn(e);
@@ -20,14 +22,39 @@ export default function FullJobItem() {
     }, [jobId]);
 
     return (
-        jobItem &&
-        <div id="job-item-full">
+        jobItem ?
+        <div id="full-job-item">
+            <div id="header">
                 <p id="title">{jobItem.title}</p>
-                <p>{jobItem.id}</p>
-        
-            <div id="job-item-full-body">
-                
+                <p id="id">Nr. {jobItem.id}</p>
+            </div>
+
+            <div id="sub-header">
+                <div className="section">
+                    <p>Company: {jobItem.company}</p>
+                    <p>Applied on: {new Date(jobItem.applyDate).toLocaleDateString("en-GB")}</p>
+                    <p>Apply Deadline: {new Date(jobItem.applyDeadline).toLocaleDateString("en-GB")}</p>
+                    <p>Status: {convertToStatusString(jobItem.status)}</p>
+                </div>
+
+                <div className="section">
+                    <p>Working Model: {convertToWorkingModelString(jobItem.workingModels)}</p>
+                    <p>Location: {jobItem.location}</p>
+                    <p>Estimated Destination: {new Date(jobItem.estimatedDestination).toLocaleTimeString("en-GB")}</p>
+                </div>
+            </div>
+            
+            <div id="body">
+                <p id="notes-header">Notes</p>
+                <p id="notes">{jobItem.notes}</p>
+                { jobItem.hyperlinks && 
+                    <div id="hyperlinks">
+                        { jobItem.hyperlinks.map((link, type) => 
+                            <a key={link} href={link} target="_blank">{type}</a>) }
+                    </div>
+                }
             </div>
         </div>
+        : <h2 className="loading">Loading JobItem id {jobId}!</h2>
     );
 }

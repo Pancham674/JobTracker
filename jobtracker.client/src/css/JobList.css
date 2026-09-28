@@ -38,3 +38,7 @@
     bottom: 0.5em;
     right: 1em;
 }
+
+.loading {
+    margin: 2em;
+}

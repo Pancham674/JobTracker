@@ -1,11 +1,12 @@
 import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
-import { useNavigate } from "react-router-dom";
 import { getAllJobItems } from "../services/api.ts";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../css/JobList.css";
 
 export default function JobList() {
     const [jobItems, setJobItems] = useState<IJobItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navi = useNavigate();
 
     useEffect(() => {
@@ -13,6 +14,7 @@ export default function JobList() {
             try {
                 const items = await getAllJobItems();
                 setJobItems(items);
+                setIsLoading(false);
             }
             catch (e) {
                 console.warn(e);
@@ -22,8 +24,9 @@ export default function JobList() {
     }, []);
 
     return (
+        !isLoading ?
         <div id="job-grid">
-            {jobItems && jobItems.map(i =>
+            { jobItems.map(i =>
                 <div key={i.id}
                     className="job-item"
                     onClick={() => navi(`/${i.id}`)}>
@@ -40,5 +43,6 @@ export default function JobList() {
                 </div>
             )}
         </div>
+        : <h2 className="loading">Reload this page once the server has started!</h2>
     );
 }
