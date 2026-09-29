@@ -43,7 +43,7 @@ namespace JobTracker.Server.Migrations
                     b.Property<TimeSpan?>("EstimatedDestination")
                         .HasColumnType("time");
 
-                    b.PrimitiveCollection<string>("Hyperlinks")
+                    b.Property<string>("HyperlinksJSON")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
