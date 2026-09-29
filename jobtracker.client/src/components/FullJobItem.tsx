@@ -47,12 +47,20 @@ export default function FullJobItem() {
             <div id="body">
                 <p id="notes-header">Notes</p>
                 <p id="notes">{jobItem.notes}</p>
-                { jobItem.hyperlinks && 
                     <div id="hyperlinks">
-                        { jobItem.hyperlinks.map((link, type) => 
-                            <a key={link} href={link} target="_blank">{type}</a>) }
+                        {
+                            Object.entries(jobItem.hyperlinks).map(([key, val]) => {
+                                if (!val.trim()) return undefined;
+                                return (
+                                    <a key={key}
+                                        href={val}
+                                        target="_blank">
+                                        {key}
+                                    </a>
+                                );
+                            })
+                        }
                     </div>
-                }
             </div>
         </div>
         : <h2 className="loading">Loading JobItem id {jobId}!</h2>

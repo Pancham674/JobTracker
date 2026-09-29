@@ -1,6 +1,6 @@
 export interface IJobItem {
+	hyperlinks: Record<LinkType, string>,
 	workingModels: WorkingModels,
-	hyperlinks: [LinkType, string][],
 	estimatedDestination: Date,
 	hyperlinksJSON: string,
 	applyDeadline: Date,
@@ -19,11 +19,11 @@ export enum Status {
 	Interviewed,
 	Offer
 }
+
 export function convertToStatusString(value: number) {
 	const status = ["Waiting", "Declined", "Interviewed", "Offer"];
 	return status[value];
 }
-
 
 export enum WorkingModels {
 	OnSite,
@@ -36,8 +36,7 @@ export function convertToWorkingModelString(value: number) {
 	return workingModels[value];
 }
 
-export enum LinkType
-{
+export enum LinkType {
 	Jobboard,
 	CompanyWebsite,
 	CompanyJobListing

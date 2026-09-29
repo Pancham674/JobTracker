@@ -23,7 +23,7 @@ namespace JobTracker.Server.Controllers
 			JobItem? item = _context.JobItems.Find(id);
 			if (item == null) return NotFound();
 
-			item.Hyperlinks = JsonSerializer.Deserialize<Dictionary<LinkType, string>>(item.HyperlinksJSON)!;
+			item.Hyperlinks = JsonSerializer.Deserialize<Dictionary<LinkType, string>>(item.HyperlinksJSON!)!;
 			return Ok(item);
 		}
 

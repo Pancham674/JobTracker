@@ -35,7 +35,10 @@
 }
 
 #full-job-item #body {
-
+    flex-direction: column;
+    margin-top: 2em;
+    display: flex;
+    gap: 1em;
 }
 
 #full-job-item #notes-header {
@@ -47,5 +50,6 @@
 }
 
 #full-job-item #hyperlinks {
-
+    justify-content: space-around;
+    display: flex;
 }
