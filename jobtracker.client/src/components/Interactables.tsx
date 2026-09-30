@@ -5,6 +5,7 @@ export default function Interactables() {
   return (
       <div id="interactables">
         <button onClick={() => navi("/new")}>
+            Create new Job item
         </button>
       </div>
   );

@@ -29,7 +29,8 @@ async function getData(url: string, options: RequestInit) {
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(`The server response for ${url} with the method ${options.method} 
+        resulted in a status of ${response.status}. ${data.errors.map(e => e)}`);
     }
 
     return data;
