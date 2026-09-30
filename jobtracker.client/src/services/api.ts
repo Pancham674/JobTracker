@@ -1,12 +1,27 @@
+import type { IJobItem } from "../Interfaces";
+
 const BASE_URL = "http://localhost:5155/api/JobItem";
-export function getAllJobItems() {
+export async function getAllJobItems() {
     const options: RequestInit = { method: 'GET'}
-    return getData(BASE_URL, options);
+    return await getData(BASE_URL, options);
 }
 
-export function getJobItem(id: number) {
+export async function postJobItem(item: IJobItem) {
+    const options: RequestInit = {
+        method: 'POST', 
+        headers: {
+          'Accept': 'application/json',  
+          'Content-Type': 'application/json',  
+        },
+        body: JSON.stringify(item)
+    }
+
+    return await getData(BASE_URL, options);
+}
+
+export async function getJobItem(id: number) {
     const options: RequestInit = { method: 'GET'}
-    return getData(`${BASE_URL}/${id}`, options);
+    return await getData(`${BASE_URL}/${id}`, options);
 }
 
 async function getData(url: string, options: RequestInit) {
