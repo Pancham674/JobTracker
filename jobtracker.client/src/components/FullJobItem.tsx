@@ -38,7 +38,7 @@ export default function FullJobItem() {
                 </div>
 
                 <div className="section">
-                    <p>Working Model: {convertToWorkingModelString(jobItem.workingModels)}</p>
+                    <p>Working Model: {convertToWorkingModelString(jobItem.model)}</p>
                     <p>Location: {jobItem.location}</p>
                     <p>Estimated Destination: {new Date(jobItem.estimatedDestination).toLocaleTimeString("en-GB")}</p>
                 </div>

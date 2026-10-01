@@ -1,0 +1,40 @@
+#new-job-item {
+    justify-items: center;
+    align-items: center;
+    margin: 1em 7em;
+    display: grid;
+    gap: 1em;
+}
+
+label input, label select {
+    margin-left: 1.5em;
+}
+
+label {
+    user-select: none;
+}
+
+fieldset {
+    justify-content: space-around;
+    padding: 0.5em 1em 1em;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    width: 100%;
+}
+
+input {
+    padding: 0.3em 1.1em;
+}
+
+textarea#notes {
+    width: 100%;
+}
+
+button {
+    width: 10em;
+    height: 2em;
+}
+#submit {
+    height: 5em;
+}

@@ -1,8 +1,8 @@
 export interface IJobItem {
 	hyperlinks: Record<LinkType, string>,
-	workingModels: WorkingModels,
 	estimatedDestination: Date,
 	hyperlinksJSON: string,
+	model: WorkingModels,
 	applyDeadline: Date,
 	location: string,
 	applyDate: Date,
@@ -36,11 +36,7 @@ export function convertToWorkingModelString(value: number) {
 	return workingModels[value];
 }
 
-export enum LinkType {
-	Jobboard,
-	CompanyWebsite,
-	CompanyJobListing
-}
+export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
 
 export function convertToLinkTypeString(value: number) {
 	const linkTypes = ["Jobboard", "CompanyWebsite", "CompanyJobListing"];

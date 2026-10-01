@@ -30,7 +30,7 @@ async function getData(url: string, options: RequestInit) {
 
     if (!response.ok) {
         throw new Error(`The server response for ${url} with the method ${options.method} 
-        resulted in a status of ${response.status}. ${data.errors.map(e => e)}`);
+        resulted in a status of ${response.status}.`);
     }
 
     return data;
