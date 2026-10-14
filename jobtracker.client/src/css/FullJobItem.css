@@ -7,19 +7,21 @@
     color: black;
 }
 
-#full-job-item #header{
-    position: relative;
+#full-job-item #header {
+/*        position: relative;*/
+    justify-content: space-between;
     display: flex;
 }
 
 #full-job-item #title {
+    overflow-wrap: anywhere;
     font-size: 1.5rem;
     font-weight: 500;
 }
 
 #full-job-item #id {
-    position: absolute;
-    right: 0;
+/*    position: absolute;
+    right: 0;*/
 }
 
 #full-job-item #sub-header {
@@ -36,6 +38,7 @@
 
 #full-job-item #body {
     flex-direction: column;
+    text-align: left;
     margin-top: 2em;
     display: flex;
     gap: 1em;

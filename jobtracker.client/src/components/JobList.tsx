@@ -30,9 +30,7 @@ export default function JobList() {
                 <div key={i.id}
                     className="job-item"
                     onClick={() => navi(`/${i.id}`)}>
-                    <div className="job-item-header">
-                        <p>{i.title}</p>
-                    </div>
+                    <p className="header">{i.title}</p>
 
                     <div className="job-item-body">
                         <p>{i.company}</p>
