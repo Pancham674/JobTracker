@@ -35,8 +35,12 @@ export default function FullJobItem() {
     return (
         jobItem ?
         <div id="full-job-item">
-            <button id="delete" onClick={deleteItem}>delete</button>
-            <button id="edit" onClick={() => navi(`/edit/${jobId}`)}>edit</button>
+            <div id="btns">
+                <button onClick={() => window.history.back()}>Go back</button>
+                <button id="edit" onClick={() => navi(`/edit/${jobId}`)}>edit</button>
+                <button id="delete" onClick={deleteItem}>delete</button>
+            </div>
+            
             <div id="header">
                 <p id="title">{jobItem.title}</p>
                 <p id="id">#{jobItem.id}</p>

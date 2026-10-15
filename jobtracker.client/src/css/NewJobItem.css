@@ -21,10 +21,10 @@ label {
 
 fieldset {
     justify-content: space-around;
-    padding: 0.5em 1em 1em;
     align-items: center;
     flex-direction: row;
     display: flex;
+    padding: 1em;
     width: 100%;
 }
 

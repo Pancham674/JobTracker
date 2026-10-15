@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { postJobItem, getJobItem } from "../services/api";
+import { postJobItem, getJobItem, editJobItem } from "../services/api";
 import { convertToStatusString, type IJobItem } from "../Interfaces";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type React from "react";
 import "../css/NewJobItem.css";
@@ -27,21 +27,25 @@ export default function NewJobItem() {
     function submitJobItem(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const jobItem = Object.fromEntries(formData.entries()) as unknown as IJobItem;
+        const newItem = Object.fromEntries(formData.entries()) as unknown as IJobItem;
         const createMore = e.currentTarget["create-more"].checked
        
-        if (jobItem && (e.currentTarget["company-job-listing"].value.trim() 
+        if (newItem && (e.currentTarget["company-job-listing"].value.trim() 
             || e.currentTarget["company-website"].value.trim() || e.currentTarget["job-board"].value.trim())) {
             try {
-                jobItem.status = Number(jobItem.status);
-                jobItem.model = Number(jobItem.model);
-                jobItem.hyperlinks = {
+                newItem.status = Number(newItem.status);
+                newItem.model = Number(newItem.model);
+                newItem.hyperlinks = {
                     "Jobboard": e.currentTarget["job-board"].value,
                     "CompanyWebsite": e.currentTarget["company-website"].value,
                     "CompanyJobListing": e.currentTarget["company-job-listing"].value
                 }
 
-                postJobItem(jobItem);
+                if (jobItem) {
+                    newItem.id = jobId;
+                    editJobItem(newItem);
+                }
+                else postJobItem(newItem);
 
                 if (!createMore) {
                     navi("/");
@@ -64,18 +68,21 @@ export default function NewJobItem() {
         <form id="new-job-item" onSubmit={submitJobItem}>
             <input type="number" name="id" id="id" 
                 defaultValue={jobItem ? jobItem.id : 0} hidden />
-            <label htmlFor="title">*Title
-                <input type="text" name="title" id="title" 
-                    required defaultValue={jobItem ? jobItem.title : ""} />
-            </label>
-
-            <label htmlFor="company">*Company
-                <input type="text" name="company" id="company" 
-                    required defaultValue={jobItem ? jobItem.company : ""}/>
-            </label>
             
             <fieldset> 
-                <legend>Dates</legend>
+                <label htmlFor="title">*Title
+                    <input type="text" name="title" id="title" 
+                        required defaultValue={jobItem ? jobItem.title : ""} />
+                </label>
+
+                <label htmlFor="company">*Company
+                    <input type="text" name="company" id="company" 
+                        required defaultValue={jobItem ? jobItem.company : ""}/>
+                </label>
+            </fieldset> 
+            
+            <fieldset> 
+                {/* <legend>Dates</legend> */}
                 <label htmlFor="applyDate">*Date you applied
                     <input type="date" name="applyDate" id="applyDate" 
                         defaultValue={jobItem ? jobItem.applyDate.toString(): todaysDate} required />
@@ -85,20 +92,20 @@ export default function NewJobItem() {
                     <input type="date" name="applyDeadline" id="applyDeadline" 
                         defaultValue={jobItem ? jobItem.applyDeadline.toString() : `1990-01-01`} />
                 </label>
+
+                <label htmlFor="status">Current status of the application
+                    <select name="status" id="statue" defaultValue={jobItem ? convertToStatusString(jobItem.status) : "Waiting"}>
+                        <option value={0}>Waiting</option >
+                        <option value={1}>Declined</option >
+                        <option value={2}>Interviewed</option >
+                        <option value={3}>Offer</option >
+                    </select>
+                </label>
             </fieldset> 
 
-            <label htmlFor="status">Select the current status of the application
-                <select name="status" id="statue" defaultValue={jobItem ? convertToStatusString(jobItem.status) : "Waiting"}>
-                    <option value={0}>Waiting</option >
-                    <option value={1}>Declined</option >
-                    <option value={2}>Interviewed</option >
-                    <option value={3}>Offer</option >
-                </select>
-            </label>
-
             <fieldset> 
-                <legend>Location</legend>
-                <label htmlFor="model">Select the working model
+                {/* <legend>Location</legend> */}
+                <label htmlFor="model">Working model
                     <select name="model" id="model" defaultValue="OnSite">
                         <option value={0}>OnSite</option >
                         <option value={1}>Hybrid</option >
@@ -106,11 +113,11 @@ export default function NewJobItem() {
                     </select>
                 </label>
 
-                <label htmlFor="location">Enter the working/company location
+                <label htmlFor="location">location you will work in
                     <input type="text" name="location" id="location" />
                 </label>
 
-                <label htmlFor="destination">Enter the destination to get to the location
+                <label htmlFor="destination">Destination to get to the location
                     <input type="time" id="destination" defaultValue="00:00" max="15:00" name="destination" />
                 </label>
             </fieldset>
