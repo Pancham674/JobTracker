@@ -44,7 +44,6 @@ namespace JobTracker.Server.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("HyperlinksJSON")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
