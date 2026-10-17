@@ -1,18 +1,24 @@
-#job-grid {
-    /*    grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));*/
-    background-color: gray;
-    /*    margin: 2em 0;*/
-    color: black;
-    /*        padding: 1em;*/
-    /*    flex-direction:column;*/
-    /*    display: flex;*/
-    user-select: none;
-    /*    gap: 0.5em;*/
-    overflow-y: scroll;
+#table-container {
+    overflow: auto;
+    height: 500px; 
+}
+
+tr {
+    scroll-snap-align:start;
+}
+
+tr:nth-last-of-type(even) {
+    background-color: var(--primary-color-2);
 }
 
 td, th, table {
-    border: 1px solid black;
+    border: 1px solid var(--primary-color-5);
+}
+
+thead {
+    background-color: var(--primary-color-3);
+    position: sticky;
+    top: -1px;
 }
 
 td, th {
@@ -20,8 +26,12 @@ td, th {
 }
 
 table {
+    background-color: var(--primary-color-1);
+    color: var(--primary-color-5);
     border-collapse: collapse;
     table-layout: fixed;
+    position: relative;
+    user-select: none;
     width: 100%;
 }
 
@@ -46,49 +56,16 @@ th#apply-date {
 }
 
 .job-item {
-    border: 1px solid black;
-/*    position: relative;*/
-/*    min-width: 20em;*/
     cursor: pointer;
-
-/*    padding: 0.75em;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    gap: 0.5em;*/
-}
-
-.job-item p:not(:last-child) {
-    border-right: 1px black solid;
-}
-
-.job-item p {
-/*    padding: 0 0.5em;*/
 }
 
 td.header {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 1.25rem;
-    max-width: 0;
     overflow: hidden;
-
-/*    padding: 0.25em 0.5em 0.25em 0;*/
+    max-width: 0;
     width: 100%;
-}
-
-.job-item-body {
-    border-top: dashed 1px black;
-    padding: 0.5em 0 0 0.5em;
-    align-items: flex-start;
-    flex-direction: column;
-    margin-top: 0.5em;
-    display: flex;
-}
-
-.job-item id{
-/*    position: absolute;*/
-/*    bottom: 0.5em;*/
-/*    right: 1em;*/
 }
 
 .loading {

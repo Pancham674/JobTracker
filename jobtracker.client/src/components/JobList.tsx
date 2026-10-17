@@ -25,7 +25,7 @@ export default function JobList() {
 
     return (
         !isLoading ?
-        <div id="job-grid">
+        <div id="table-container">
             <table>
                 <thead>
                     <tr>
