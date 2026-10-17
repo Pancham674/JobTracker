@@ -66,6 +66,7 @@ export default function NewJobItem() {
 
     return (
         <form id="new-job-item" onSubmit={submitJobItem}>
+            <h2>{jobItem ? `Update item #${jobId}` : "create new item"}</h2>
             <input type="number" name="id" id="id" 
                 defaultValue={jobItem ? jobItem.id : 0} hidden />
             
@@ -150,7 +151,7 @@ export default function NewJobItem() {
             </label>
             <div id="btns">
                 <button type="button" onClick={() => window.history.back()}>Cancel</button>
-                <button type="submit">Create</button>
+                <button type="submit">{jobItem ? "Update" : "Create"}</button>
             </div>
         </form>
     );

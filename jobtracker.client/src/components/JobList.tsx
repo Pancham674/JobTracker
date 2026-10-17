@@ -26,20 +26,29 @@ export default function JobList() {
     return (
         !isLoading ?
         <div id="job-grid">
-            { jobItems.map(i =>
-                <div key={i.id}
-                    className="job-item"
-                    onClick={() => navi(`/${i.id}`)}>
-                    <p className="header">{i.title}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th id="id">ID</th>
+                        <th id="title">Title</th>
+                        <th id="company">Company</th>
+                        <th id="status">Status</th>
+                        <th id="apply-date">Applied on</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { jobItems.map(i =>
+                        <tr className="job-item" key={i.id} onClick={() => navi(`/${i.id}`)}>
+                            <td className="id">{i.id}</td>
+                            <td className="header">{i.title}</td>
 
-                    <div className="job-item-body">
-                        <p>{i.company}</p>
-                        <p>Status: {convertToStatusString(i.status)}</p>
-                        <p>Applied on: {new Date(i.applyDate).toLocaleDateString("en-GB")}</p>
-                        <p className="job-item-number">#{i.id}</p>
-                    </div>
-                </div>
-            )}
+                            <td>{i.company}</td>
+                            <td>{convertToStatusString(i.status)}</td>
+                            <td>{new Date(i.applyDate).toLocaleDateString("en-GB")}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         </div>
         : <h2 className="loading">Reload this page once the server has started!</h2>
     );

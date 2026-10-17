@@ -1,29 +1,78 @@
 #job-grid {
-    grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+    /*    grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));*/
     background-color: gray;
-    margin: 2em 0;
-    display: grid;
+    /*    margin: 2em 0;*/
     color: black;
-    padding: 1em;
-    gap: 1em;
+    /*        padding: 1em;*/
+    /*    flex-direction:column;*/
+    /*    display: flex;*/
+    user-select: none;
+    /*    gap: 0.5em;*/
+    overflow-y: scroll;
+}
+
+td, th, table {
+    border: 1px solid black;
+}
+
+td, th {
+    padding: 5px
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+th#id {
+    width:5%
+}
+
+th#title {
+    width: 50%
+}
+
+th#company {
+    width: 20%
+}
+
+th#status {
+    width: 10%
+}
+
+th#apply-date {
+    width: 15%
 }
 
 .job-item {
     border: 1px solid black;
-    position: relative;
-    user-select: none;
-    min-width: 20em;
+/*    position: relative;*/
+/*    min-width: 20em;*/
     cursor: pointer;
-    padding: 0.5em;
+
+/*    padding: 0.75em;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 0.5em;*/
 }
 
-.job-item .header {
+.job-item p:not(:last-child) {
+    border-right: 1px black solid;
+}
+
+.job-item p {
+/*    padding: 0 0.5em;*/
+}
+
+td.header {
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 1.25rem;
+    max-width: 0;
     overflow: hidden;
-    padding: 0.25em 0;
+
+/*    padding: 0.25em 0.5em 0.25em 0;*/
     width: 100%;
 }
 
@@ -36,10 +85,10 @@
     display: flex;
 }
 
-.job-item-number {
-    position: absolute;
-    bottom: 0.5em;
-    right: 1em;
+.job-item id{
+/*    position: absolute;*/
+/*    bottom: 0.5em;*/
+/*    right: 1em;*/
 }
 
 .loading {
