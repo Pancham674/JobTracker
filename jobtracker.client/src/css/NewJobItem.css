@@ -15,11 +15,12 @@ label input, label select {
     margin-left: 1.5em;
 }
 
-label {
+label, legend {
     user-select: none;
 }
 
 fieldset {
+    border: 1px solid var(--primary-color-5);
     justify-content: space-around;
     align-items: center;
     flex-direction: row;
@@ -28,18 +29,35 @@ fieldset {
     width: 100%;
 }
 
-input {
+input, select, textarea, legend, #create-more {
+    border: 1px solid var(--primary-color-5);
     padding: 0.3em 1.1em;
 }
 
+input, select, textarea {
+    background-color: var(--primary-color-2);
+}
+
+input[type=checkbox] {
+    accent-color: var(--primary-color-2);
+    width: 1.5em;
+    height: 1.5em;
+}
+
+legend, #create-more, fieldset {
+    background-color: var(--primary-color-1);
+}
+
 textarea#notes {
+    min-height: 2ch;
+    min-width: 30ch;
     width: 100%;
 }
 
-button {
-    width: 10em;
-    height: 2em;
+label, legend, input::placeholder, textarea::placeholder {
+    color: var(--primary-color-5);
 }
+
 #submit {
     height: 5em;
 }

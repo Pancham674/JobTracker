@@ -50,7 +50,7 @@ export default function FullJobItem() {
                 <div className="section">
                     <p>Company: {jobItem.company}</p>
                     <p>Applied on: {new Date(jobItem.applyDate).toLocaleDateString("en-GB")}</p>
-                    { jobItem.applyDeadline.toString() != "1990-01-01" &&
+                    { jobItem.applyDeadline.toString() != `0001-01-01` &&
                         <p>Apply Deadline: {new Date(jobItem.applyDeadline).toLocaleDateString("en-GB")}</p>}
                     <p>Status: {convertToStatusString(jobItem.status)}</p>
                 </div>

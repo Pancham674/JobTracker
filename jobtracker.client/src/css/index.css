@@ -90,7 +90,9 @@ h2 {
     font-size: 20px;
   }
 }
+
 p {
+  color: var(--primary-color-5);
   margin: 0;
 }
 

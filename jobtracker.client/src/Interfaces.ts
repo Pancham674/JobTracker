@@ -3,7 +3,7 @@ export interface IJobItem {
 	estimatedDestination: Date,
 	hyperlinksJSON: string,
 	model: WorkingModels,
-	applyDeadline: Date,
+	applyDeadline: Date | string,
 	location: string,
 	applyDate: Date,
 	company: string,
