@@ -1,6 +1,7 @@
 #btns {
-    gap: 1em;
+    justify-content: center;
     display: flex;
+    gap: 1em;
 }
 
 #new-job-item {

@@ -1,14 +1,12 @@
 #full-job-item {
+    background: var(--primary-color-1);
     flex-direction: column;
-    background: aliceblue;
+    padding: 1.5em;
     display: flex;
-    margin: 1em 0;
-    padding: 2em;
-    color: black;
+    gap: 1em;
 }
 
 #full-job-item #header {
-/*        position: relative;*/
     justify-content: space-between;
     display: flex;
 }
@@ -20,8 +18,7 @@
 }
 
 #full-job-item #id {
-/*    position: absolute;
-    right: 0;*/
+    color: white;
 }
 
 #full-job-item #sub-header {
@@ -39,9 +36,8 @@
 #full-job-item #body {
     flex-direction: column;
     text-align: left;
-    margin-top: 2em;
     display: flex;
-    gap: 1em;
+    gap: 0.5em;
 }
 
 #full-job-item #notes-header {
