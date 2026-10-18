@@ -1,9 +1,9 @@
 export interface IJobItem {
 	hyperlinks: Record<LinkType, string>,
-	estimatedDestination: Date,
+	applyDeadline: Date | string,
 	hyperlinksJSON: string,
 	model: WorkingModels,
-	applyDeadline: Date | string,
+	travelTime: Date,
 	location: string,
 	applyDate: Date,
 	company: string,

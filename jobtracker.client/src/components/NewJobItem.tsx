@@ -28,7 +28,7 @@ export default function NewJobItem() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const newItem = Object.fromEntries(formData.entries()) as unknown as IJobItem;
-        const createMore = e.currentTarget["create-more"].checked
+        const createMore = jobItem ? false : e.currentTarget["create-more"].checked;
        
         newItem.applyDeadline = newItem.applyDeadline ? newItem.applyDeadline: `0001-01-01`; 
 
@@ -42,6 +42,7 @@ export default function NewJobItem() {
                     "CompanyWebsite": e.currentTarget["company-website"].value,
                     "CompanyJobListing": e.currentTarget["company-job-listing"].value
                 }
+                newItem.travelTime = e.currentTarget["travel-time"].value;
 
                 if (jobItem) {
                     newItem.id = jobId;
@@ -49,12 +50,13 @@ export default function NewJobItem() {
                 }
                 else postJobItem(newItem);
 
-                if (!createMore) {
-                    navi("/");
-                }
-                else {
+                if (createMore) {       //dont leave page
                     e.currentTarget.reset();
                     e.currentTarget["create-more"].checked = true;
+                }
+                else {                  //redirect to either details or list page 
+                    if (jobItem) navi(`/${jobId}`)
+                    else navi("/");
                 }
             }
             catch(e) {
@@ -89,7 +91,8 @@ export default function NewJobItem() {
             <fieldset> 
                 <label htmlFor="applyDate">*Date you applied
                     <input type="date" name="applyDate" id="applyDate" 
-                        defaultValue={jobItem ? jobItem.applyDate.toString(): todaysDate} required />
+                        defaultValue={jobItem ? jobItem.applyDate.toString(): todaysDate}
+                        required max={todaysDate}/>
                 </label>
 
                 <label htmlFor="applyDeadline">Job listing deadline
@@ -124,8 +127,8 @@ export default function NewJobItem() {
                     <input type="text" name="location" id="location" />
                 </label>
 
-                <label htmlFor="destination">Travel time
-                    <input type="time" id="destination" defaultValue="00:00" name="destination" step={900}/>
+                <label htmlFor="travel-time">Travel time
+                    <input type="time" id="travel-time" defaultValue="00:00" name="travel-time"/>
                 </label>
             </fieldset>
 
@@ -152,9 +155,11 @@ export default function NewJobItem() {
                     defaultValue={jobItem ? jobItem.notes : ""}/>
             </fieldset>
 
+            { !jobItem && 
             <label id="create-more">Create more
                 <input type="checkbox" name="create-more" />
-            </label>
+            </label> }
+
             <div id="btns">
                 <button type="button" onClick={() => window.history.back()}>Cancel</button>
                 <button type="submit">{jobItem ? "Update" : "Create"}</button>

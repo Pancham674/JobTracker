@@ -40,9 +40,6 @@ namespace JobTracker.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("EstimatedDestination")
-                        .HasColumnType("time");
-
                     b.Property<string>("HyperlinksJSON")
                         .HasColumnType("nvarchar(max)");
 
@@ -62,6 +59,9 @@ namespace JobTracker.Server.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("TravelTime")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 

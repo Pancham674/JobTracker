@@ -14,7 +14,7 @@ namespace JobTracker.Server
 		[MaxLength(500)] public string? Notes { get; set; }
 		public required WorkingModels Model { get; set; }
 		public string? Location { get; set; }												//May be undefined if it's full remote.
-		public TimeSpan? EstimatedDestination { get; set; }									//How long it'll take to arrive at the location.
+		public TimeSpan? TravelTime { get; set; }									//How long it'll take to arrive at the location.
 		public required DateOnly ApplyDate { get; set; } 
 		public DateOnly? ApplyDeadline { get; set; }										//How long till the job gets taken down. 
 		[NotMapped] public required Dictionary<LinkType, string> Hyperlinks { get; set; }	//Can contain links to the company website, jobboard, etc.

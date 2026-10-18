@@ -3,16 +3,8 @@
     height: 500px; 
 }
 
-tr {
-    scroll-snap-align:start;
-}
-
 tr:nth-last-of-type(even) {
     background-color: var(--primary-color-2);
-}
-
-td, th, table {
-    border: 1px solid var(--primary-color-5);
 }
 
 thead {
@@ -22,7 +14,15 @@ thead {
 }
 
 td, th {
-    padding: 5px
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 0;
+    width: 100%;
+}
+
+td {
+    white-space: nowrap;
 }
 
 table {
@@ -60,12 +60,7 @@ th#apply-date {
 }
 
 td.header {
-    text-overflow: ellipsis;
-    white-space: nowrap;
     font-size: 1.25rem;
-    overflow: hidden;
-    max-width: 0;
-    width: 100%;
 }
 
 .loading {

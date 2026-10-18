@@ -12,8 +12,7 @@ export default function FullJobItem() {
     useEffect(() => {
         async function loadJobItem() {
             try {
-                const j0b = await getJobItem(jobId);
-                setJobItem(j0b);
+                setJobItem(await getJobItem(jobId));
             }
             catch (e) {
                 console.warn(e);
@@ -58,7 +57,7 @@ export default function FullJobItem() {
                 <div className="section">
                     <p>Working Model: {convertToWorkingModelString(jobItem.model)}</p>
                     { jobItem.location && <p>Location: {jobItem.location}</p>}
-                    { jobItem.estimatedDestination && <p>Estimated Destination: {new Date(jobItem.estimatedDestination).toLocaleTimeString("en-GB")}</p>}
+                    { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && <p>Travel time: {ToHourMinString(jobItem.travelTime.toString())}</p>}
                 </div>
             </div>
             
@@ -89,3 +88,7 @@ export default function FullJobItem() {
     );
 }
 
+function ToHourMinString(travelTime: string):string {
+    const times = travelTime.split(":");
+    return `${times[0]}H ${times[1]}M`
+}
