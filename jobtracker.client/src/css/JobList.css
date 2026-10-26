@@ -1,6 +1,6 @@
 #table-container {
     overflow: auto;
-    height: 500px; 
+    height: 400px; 
 }
 
 tr:nth-last-of-type(even) {

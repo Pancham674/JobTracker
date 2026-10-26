@@ -1,10 +1,14 @@
-#full-job-item {
+#full-job {
+    margin: 3em 0;
+}
+
+#item {
     background: var(--primary-color-2);
     flex-direction: column;
     min-width: 380px;
     padding: 1.5em;
     display: flex;
-    margin: 3em 0;
+    margin: 1em 0;
     gap: 1em;
 }
 
@@ -23,34 +27,36 @@ div:has(> .item-value) {
     color: white;
 }
 
-#full-job-item #header {
+#item #header {
+    background-color: var(--primary-color-1);
     justify-content: space-between;
+    padding: 0.5em 0.25em;
     display: flex;
 }
 
-#full-job-item #title {
+#item #title {
     overflow-wrap: anywhere;
     font-size: 1.5rem;
     font-weight: 500;
 }
 
-#full-job-item #id {
+#item #id {
     color: white;
 }
 
-#full-job-item #sub-header {
+#item #sub-header {
     flex-direction: column;
     margin: 0.5em 0;
     display: flex;
     gap: 0.5em;
 }
 
-#full-job-item .section {
+#item .section {
     justify-content: space-between;
     display: flex;
 }
 
-#full-job-item #body {
+#item #body {
     flex-direction: column;
     text-align: left;
     padding: 0.5em 0;
@@ -58,7 +64,7 @@ div:has(> .item-value) {
     gap: 0.5em;
 }
 
-#full-job-item #hyperlinks {
-    justify-content: space-around;
+#item #hyperlinks {
+    justify-content: flex-start;
     display: flex;
 }

@@ -33,7 +33,8 @@ export default function FullJobItem() {
 
     return (
         jobItem ?
-        <div id="full-job-item">
+        <div id="full-job">
+            <div id="item">
             <div id="header">
                 <p id="title">{jobItem.title}</p>
                 <p id="id">#{jobItem.id}</p>
@@ -58,25 +59,25 @@ export default function FullJobItem() {
                         <p>Status:</p>
                         <p className="item-value">{convertToStatusString(jobItem.status)}</p>
                     </div>
-                </div>
+            </div>
 
-                <div className="section">
+            <div className="section">
+                <div>
+                    <p>Working Model:</p>
+                    <p className="item-value">{convertToWorkingModelString(jobItem.model)}</p>
+                </div>
+                    
+                { jobItem.location && 
                     <div>
-                        <p>Working Model:</p>
-                        <p className="item-value">{convertToWorkingModelString(jobItem.model)}</p>
-                    </div>
+                        <p>Location:</p>
+                        <p className="item-value">{jobItem.location}</p>
+                    </div>}
                     
-                    { jobItem.location && 
-                        <div>
-                            <p>Location:</p>
-                            <p className="item-value">{jobItem.location}</p>
-                        </div>}
-                    
-                    { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && 
-                        <div>
-                            <p>Travel time:</p>
-                            <p className="item-value">{ToHourMinString(jobItem.travelTime.toString())}</p>
-                        </div>}
+                { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && 
+                    <div>
+                        <p>Travel time:</p>
+                        <p className="item-value">{ToHourMinString(jobItem.travelTime.toString())}</p>
+                    </div>}
                 </div>
             </div>
             
@@ -87,22 +88,24 @@ export default function FullJobItem() {
                         <p id="notes" className="item-value">{jobItem.notes}</p>
                     </>
                 }
-                    <div id="hyperlinks">
-                        {
-                            Object.entries(jobItem.hyperlinks).map(([key, val], i) => {
-                                if (!val.trim()) return;
-                                return (
-                                    <a key={key}
-                                        className="item-value"
-                                        href={val}
-                                        target="_blank">
-                                        {convertToLinkTypeString(Number(i))}
-                                    </a>
-                                );
-                            })
-                        }
-                    </div>
+                <div id="hyperlinks">
+                <p>Links:</p>
+                    {
+                        Object.entries(jobItem.hyperlinks).map(([key, val], i) => {
+                            if (!val.trim()) return;
+                            return (
+                                <a key={key}
+                                    className="item-value"
+                                    href={val}
+                                    target="_blank">
+                                    {convertToLinkTypeString(Number(i))}
+                                </a>
+                            );
+                        })
+                    }
+                </div>
             </div>
+        </div>
             <div id="btns">
                 <button onClick={() => navi("/")}>Back to list</button>
                 <button id="edit" onClick={() => navi(`/edit/${jobId}`)}>Edit</button>

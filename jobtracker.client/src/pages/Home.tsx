@@ -5,8 +5,8 @@ import "../css/Home.css";
 export default function Home() {
   return (
       <div id="home">
-          <Interactables />
           <JobList />
+          <Interactables />
       </div>
   );
 }
