@@ -1,24 +1,25 @@
 import { postJobItem, getJobItem, editJobItem } from "../services/api";
-import { convertToStatusString, type IJobItem } from "../Interfaces";
 import { useParams, useNavigate } from "react-router-dom";
+import { type IJobItem } from "../Interfaces";
 import { useState, useEffect } from "react";
 import type React from "react";
 import "../css/NewJobItem.css";
 
 export default function NewJobItem() {
     const [jobItem, setJobItem] = useState<IJobItem>();
+    const [stateStatus, setStateStatus] = useState(0);
+    const [stateModel, setStateModel] = useState(0);
+
     const jobId = Number(useParams().id);
     const navi = useNavigate();
     
-    const date = new Date();
-    const day = date.getDate().toString();
-    const month = (date.getMonth() +1).toString();
-    const todaysDate = `${date.getFullYear()}-${month.length == 1 ? 0 + month: month}-${day.length == 1 ? 0 + day: day}`;
-
     useEffect(() => {
         async function loadJobItem() {
             if (jobId) {
-                setJobItem(await getJobItem(jobId));
+                const grabbedItem: IJobItem = await getJobItem(jobId);
+                setJobItem(grabbedItem);
+                setStateModel(grabbedItem.model);
+                setStateStatus(grabbedItem.status);
             }
         }
         loadJobItem();
@@ -91,8 +92,8 @@ export default function NewJobItem() {
             <fieldset> 
                 <label htmlFor="applyDate">*Date you applied
                     <input type="date" name="applyDate" id="applyDate" 
-                        defaultValue={jobItem ? jobItem.applyDate.toString(): todaysDate}
-                        required max={todaysDate}/>
+                        defaultValue={jobItem ? jobItem.applyDate.toString(): getTodaysDate()}
+                        required max={getTodaysDate()}/>
                 </label>
 
                 <label htmlFor="applyDeadline">Job listing deadline
@@ -105,7 +106,7 @@ export default function NewJobItem() {
                 </label>
 
                 <label htmlFor="status">Current status
-                    <select name="status" id="status" defaultValue={jobItem ? convertToStatusString(jobItem.status) : "Waiting"}>
+                    <select name="status" id="status" value={stateStatus}  onChange={(e) => setStateStatus(Number(e.currentTarget.value))}>
                         <option value={0}>Waiting</option >
                         <option value={1}>Declined</option >
                         <option value={2}>Interviewed</option >
@@ -116,10 +117,10 @@ export default function NewJobItem() {
 
             <fieldset> 
                 <label htmlFor="model">Working model
-                    <select name="model" id="model" defaultValue="OnSite">
-                        <option value={0}>OnSite</option >
+                    <select name="model" id="model" value={stateModel}  onChange={(e) => setStateModel(Number(e.currentTarget.value))}>
+                        <option value={0}>On Site</option >
                         <option value={1}>Hybrid</option >
-                        <option value={2}>FullRemote</option >
+                        <option value={2}>Full Remote</option >
                     </select>
                 </label>
 
@@ -166,4 +167,12 @@ export default function NewJobItem() {
             </div>
         </form>
     );
+}
+
+function getTodaysDate() {
+    const date = new Date();
+    const day = date.getDate().toString();
+    const month = (date.getMonth() +1).toString();
+    const todaysDate = `${date.getFullYear()}-${month.length == 1 ? 0 + month: month}-${day.length == 1 ? 0 + day: day}`;
+    return todaysDate;
 }
