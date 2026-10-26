@@ -1,4 +1,4 @@
-import { convertToStatusString, convertToWorkingModelString, type IJobItem } from "../Interfaces.ts";
+import { convertToLinkTypeString, convertToStatusString, convertToWorkingModelString, type IJobItem } from "../Interfaces.ts";
 import { getJobItem, deleteJobItem } from "../services/api.ts";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -41,17 +41,42 @@ export default function FullJobItem() {
 
             <div id="sub-header">
                 <div className="section">
-                    <p>Company: {jobItem.company}</p>
-                    <p>Applied on: {new Date(jobItem.applyDate).toLocaleDateString("en-GB")}</p>
+                    <div>
+                        <p>Company:</p>
+                        <p className="item-value">{jobItem.company}</p>
+                    </div>
+                    <div>
+                        <p>Applied on:</p>
+                        <p className="item-value">{new Date(jobItem.applyDate).toLocaleDateString("en-GB")}</p>
+                    </div>
                     { jobItem.applyDeadline.toString() != `0001-01-01` &&
-                        <p>Apply Deadline: {new Date(jobItem.applyDeadline).toLocaleDateString("en-GB")}</p>}
-                    <p>Status: {convertToStatusString(jobItem.status)}</p>
+                        <div>
+                            <p>Apply Deadline:</p>
+                            <p className="item-value">{new Date(jobItem.applyDeadline).toLocaleDateString("en-GB")}</p>
+                        </div>}
+                    <div>
+                        <p>Status:</p>
+                        <p className="item-value">{convertToStatusString(jobItem.status)}</p>
+                    </div>
                 </div>
 
                 <div className="section">
-                    <p>Working Model: {convertToWorkingModelString(jobItem.model)}</p>
-                    { jobItem.location && <p>Location: {jobItem.location}</p>}
-                    { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && <p>Travel time: {ToHourMinString(jobItem.travelTime.toString())}</p>}
+                    <div>
+                        <p>Working Model:</p>
+                        <p className="item-value">{convertToWorkingModelString(jobItem.model)}</p>
+                    </div>
+                    
+                    { jobItem.location && 
+                        <div>
+                            <p>Location:</p>
+                            <p className="item-value">{jobItem.location}</p>
+                        </div>}
+                    
+                    { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && 
+                        <div>
+                            <p>Travel time:</p>
+                            <p className="item-value">{ToHourMinString(jobItem.travelTime.toString())}</p>
+                        </div>}
                 </div>
             </div>
             
@@ -59,18 +84,19 @@ export default function FullJobItem() {
                 { jobItem.notes.trim() && 
                     <>
                         <p id="notes-header">Notes:</p>
-                        <p id="notes">{jobItem.notes}</p>
+                        <p id="notes" className="item-value">{jobItem.notes}</p>
                     </>
                 }
                     <div id="hyperlinks">
                         {
-                            Object.entries(jobItem.hyperlinks).map(([key, val]) => {
+                            Object.entries(jobItem.hyperlinks).map(([key, val], i) => {
                                 if (!val.trim()) return;
                                 return (
                                     <a key={key}
+                                        className="item-value"
                                         href={val}
                                         target="_blank">
-                                        {key}
+                                        {convertToLinkTypeString(Number(i))}
                                     </a>
                                 );
                             })

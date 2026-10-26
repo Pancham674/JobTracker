@@ -7,7 +7,7 @@
 #new-job-item {
     justify-items: center;
     align-items: center;
-    margin: 1em 7em;
+    min-width: 380px;
     display: grid;
     gap: 1em;
 }
@@ -26,7 +26,7 @@ fieldset {
     align-items: center;
     flex-direction: row;
     display: flex;
-    padding: 1em;
+    padding: 1em 0;
     width: 100%;
 }
 
@@ -52,7 +52,7 @@ legend, #create-more, fieldset {
 textarea#notes {
     min-height: 2ch;
     min-width: 30ch;
-    width: 100%;
+    width: 90%;
 }
 
 label, legend, input::placeholder, textarea::placeholder {

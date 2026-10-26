@@ -1,7 +1,7 @@
 :root {
     --text: #6b6375;
     --text-h: #08060d;
-    --bg: #fff;
+    --bg: var(--primary-color-1);
     --border: #e5e4e7;
     --code-bg: #f4f3ec;
     --accent: #aa3bff;
@@ -21,7 +21,6 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
     --primary-color-1: #986DAF;
     --primary-color-2: #76478F;
     --primary-color-3: #582A72;
@@ -37,7 +36,7 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    --bg: #16171d;
+    --bg: var(--primary-color-5);
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;

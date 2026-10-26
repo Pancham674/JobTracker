@@ -39,6 +39,6 @@ export function convertToWorkingModelString(value: number) {
 export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
 
 export function convertToLinkTypeString(value: number) {
-	const linkTypes = ["Jobboard", "CompanyWebsite", "CompanyJobListing"];
+	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];
 	return linkTypes[value];
 }
