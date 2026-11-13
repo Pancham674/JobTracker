@@ -1,12 +1,11 @@
 import { convertToLinkTypeString, convertToStatusString, convertToWorkingModelString, type IJobItem } from "../Interfaces.ts";
 import { getJobItem, deleteJobItem } from "../services/api.ts";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../css/FullJobItem.css";
 
-export default function FullJobItem() {
+export default function FullJobItem({jobId}: {jobId: number}) {
     const [jobItem, setJobItem] = useState<IJobItem>();
-    const jobId = Number(useParams().id);
     const navi = useNavigate();
 
     useEffect(() => {
@@ -59,24 +58,19 @@ export default function FullJobItem() {
                         <p>Status:</p>
                         <p className="item-value">{convertToStatusString(jobItem.status)}</p>
                     </div>
-            </div>
-
-            <div className="section">
-                <div>
-                    <p>Working Model:</p>
-                    <p className="item-value">{convertToWorkingModelString(jobItem.model)}</p>
-                </div>
-                    
-                { jobItem.location && 
                     <div>
-                        <p>Location:</p>
-                        <p className="item-value">{jobItem.location}</p>
-                    </div>}
-                    
-                { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && 
-                    <div>
-                        <p>Travel time:</p>
-                        <p className="item-value">{ToHourMinString(jobItem.travelTime.toString())}</p>
+                        <p>Working Model:</p>
+                        <p className="item-value">{convertToWorkingModelString(jobItem.model)}</p>
+                    </div>
+                    { jobItem.location && 
+                        <div>
+                            <p>Location:</p>
+                            <p className="item-value">{jobItem.location}</p>
+                        </div>}
+                    { (jobItem.travelTime && jobItem.travelTime.toString() != "00:00:00") && 
+                        <div>
+                            <p>Travel time:</p>
+                            <p className="item-value">{ToHourMinString(jobItem.travelTime.toString())}</p>
                     </div>}
                 </div>
             </div>
@@ -107,7 +101,7 @@ export default function FullJobItem() {
             </div>
         </div>
             <div id="btns">
-                <button onClick={() => navi("/")}>Back to list</button>
+                <button onClick={() => navi("/")}>Close</button>
                 <button id="edit" onClick={() => navi(`/edit/${jobId}`)}>Edit</button>
                 <button id="delete" onClick={deleteItem}>Delete</button>
             </div>

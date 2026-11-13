@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../css/JobList.css";
 
-export default function JobList() {
+export default function JobList({setJobId}: {setJobId: React.Dispatch<React.SetStateAction<number>>}) {
     const [jobItems, setJobItems] = useState<IJobItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const navi = useNavigate();
@@ -40,7 +40,7 @@ export default function JobList() {
                     </thead>
                     <tbody>
                         { jobItems.map(i =>
-                            <tr className="job-item" key={i.id} onClick={() => navi(`/${i.id}`)}>
+                            <tr className="job-item" key={i.id} onClick={() => setJobId(i.id)}>
                                 <td className="id">{i.id}</td>
                                 <td className="header">{i.title}</td>
 
