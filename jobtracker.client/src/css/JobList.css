@@ -1,9 +1,9 @@
 #table-container {
     overflow: auto;
-    height: 374px; /*34(px is a tr) * 11 (10 rows + headers)*/
+    max-height: 374px; /*34(px is a tr) * 11 (10 rows + headers)*/
 }
 
-tr:nth-last-of-type(even) {
+tr:nth-child(even) {
     background-color: var(--primary-color-2);
 }
 

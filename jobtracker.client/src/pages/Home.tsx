@@ -1,17 +1,51 @@
+import { deleteJobItem, getAllJobItems, getJobItem } from "../services/api.ts";
 import Interactables from "../components/Interactables.tsx";
 import FullJobItem from "../components/FullJobItem.tsx";
+import type { IJobItem } from "../Interfaces.ts";
 import JobList from "../components/JobList.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css/Home.css";
 
 export default function Home() {
-    const [jobId, setJobId] = useState(0);
-    // const [jobId, setJobId] = useState(0);
+    const [isJobListLoading, setIsJobListLoading] = useState(true);
+    const [jobItems, setJobItems] = useState<IJobItem[]>([]);
+    const [jobItem, setJobItem] = useState<IJobItem>();
 
-    function handleJobListClick(clickedId: number) {
-        if (jobId === clickedId) {
-            toggleFullJobItem(2);
-        } else if (jobId != clickedId) setJobId(clickedId);
+    useEffect(() => {
+        loadJobItems();
+    }, []);
+
+    async function loadJobItems() {
+        try {
+            const items = await getAllJobItems();
+            setJobItems(items);
+            setIsJobListLoading(false);
+        }
+        catch (e) {
+            console.warn(e);
+        }
+    }
+
+    async function onJobListClick(clickedId: number) {
+        if (jobItem?.id === clickedId) toggleFullJobItem(2);
+        else if (jobItem?.id != clickedId) {
+            try {
+                setJobItem(await getJobItem(clickedId));
+            } catch (e) { console.warn(e); }
+
+            toggleFullJobItem(2)
+        }
+    }
+
+    async function deleteItem() {
+        try {
+            await deleteJobItem(jobItem!.id);
+            toggleFullJobItem(1);
+            loadJobItems();
+        }
+        catch (e) {
+            console.warn(e)
+        }
     }
 
     function toggleFullJobItem(action: number) {
@@ -27,9 +61,9 @@ export default function Home() {
 
     return (
         <div id="home">
-            {/* <Interactables /> */}
-            <JobList onJobListClick={handleJobListClick}/>
-            {jobId != 0 && <FullJobItem currentId={jobId} toggleMe={toggleFullJobItem}/>}
+            <Interactables />
+            <JobList handleJobListClick={onJobListClick} list={jobItems} isLoading={isJobListLoading}/>
+            {jobItem && <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>}
         </div>
     );
 }

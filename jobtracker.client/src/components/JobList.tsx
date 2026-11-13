@@ -1,30 +1,11 @@
 import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
-import { getAllJobItems } from "../services/api.ts";
-import { useState, useEffect } from "react";
 import "../css/JobList.css";
 
-export default function JobList({onJobListClick}: {onJobListClick: (c: number) => void}) {
-    const [jobItems, setJobItems] = useState<IJobItem[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadJobItems() {
-            try {
-                const items = await getAllJobItems();
-                setJobItems(items);
-                setIsLoading(false);
-            }
-            catch (e) {
-                console.warn(e);
-            }
-        }
-        loadJobItems();
-    }, []);
-
+export default function JobList({handleJobListClick, list, isLoading}: {handleJobListClick: (c: number) => void, list: IJobItem[], isLoading: boolean}) {
     return (
         !isLoading ?
         <>
-            <h2>Application count: {jobItems.length}</h2>
+            <h2>Application count: {list.length}</h2>
             <div id="table-container">
                 <table>
                     <thead>
@@ -37,8 +18,8 @@ export default function JobList({onJobListClick}: {onJobListClick: (c: number) =
                         </tr>
                     </thead>
                     <tbody>
-                        { jobItems.map(i =>
-                            <tr className="job-item" key={i.id} onClick={() => onJobListClick(i.id)}>
+                        { list.map(i =>
+                            <tr className="job-item" key={i.id} onClick={() => handleJobListClick(i.id)}>
                                 <td className="id">{i.id}</td>
                                 <td className="header">{i.title}</td>
 
