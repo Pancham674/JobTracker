@@ -5,7 +5,6 @@ import "../css/FullJobItem.css";
 export default function FullJobItem({toggleMe, deleteItem, jobItem}: {toggleMe: (a: number) => void, deleteItem: () => void, jobItem: IJobItem}) {
     const navi = useNavigate();
 
-
     return (
         <div id="full-job">
             <div id="btns">
@@ -87,4 +86,3 @@ function ToHourMinString(travelTime: string):string {
     const times = travelTime.split(":");
     return `${times[0]}H ${times[1]}M`
 }
-

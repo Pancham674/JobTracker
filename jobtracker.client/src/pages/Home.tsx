@@ -18,15 +18,15 @@ export default function Home() {
     async function loadJobItems() {
         try {
             const items = await getAllJobItems();
-            setJobItems(items);
             setIsJobListLoading(false);
+            setJobItems(items);
         }
         catch (e) {
             console.warn(e);
         }
     }
 
-    async function onJobListClick(clickedId: number) {
+    async function onJobItemClick(clickedId: number) {
         if (jobItem?.id === clickedId) toggleFullJobItem(2);
         else if (jobItem?.id != clickedId) {
             try {
@@ -61,8 +61,8 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables />
-            <JobList handleJobListClick={onJobListClick} list={jobItems} isLoading={isJobListLoading}/>
+            <Interactables jobCount={jobItems.length}/>
+            <JobList handleJobItemClick={onJobItemClick} list={jobItems} isLoading={isJobListLoading}/>
             {jobItem && <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>}
         </div>
     );
