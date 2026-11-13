@@ -1,9 +1,8 @@
 import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
 import "../css/JobList.css";
 
-export default function JobList({handleJobItemClick, list, isLoading}: {handleJobItemClick: (c: number) => void, list: IJobItem[], isLoading: boolean}) {
+export default function JobList({handleJobItemClick, list}: {handleJobItemClick: (c: number) => void, list: IJobItem[]}) {
     return (
-        !isLoading ?
         <div id="table-container">
             <table>
                 <thead>
@@ -29,6 +28,5 @@ export default function JobList({handleJobItemClick, list, isLoading}: {handleJo
                 </tbody>
             </table>
         </div>
-        : <h2 className="loading">Reload this page once the server has started!</h2>
     );
 }

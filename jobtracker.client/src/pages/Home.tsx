@@ -62,8 +62,12 @@ export default function Home() {
     return (
         <div id="home">
             <Interactables jobCount={jobItems.length}/>
-            <JobList handleJobItemClick={onJobItemClick} list={jobItems} isLoading={isJobListLoading}/>
-            {jobItem && <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>}
+            { !isJobListLoading ? 
+                <JobList handleJobItemClick={onJobItemClick} list={jobItems}/>
+                : <h2 className="loading">Reload this page once the server has started!</h2> }                
+            {jobItem ? 
+                <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>
+                : <h2 className="loading">Click a job Item to view its details.</h2>}
         </div>
     );
 }
