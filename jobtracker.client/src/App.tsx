@@ -1,5 +1,4 @@
-﻿import FullJobItem from "./components/FullJobItem.tsx";
-import NewJobItem from "./components/NewJobItem.tsx";
+﻿import NewJobItem from "./components/NewJobItem.tsx";
 import { Route, Routes } from "react-router-dom";
 // import Footer from "./components/Footer.tsx";
 // import Header from "./components/Header.tsx";
@@ -14,7 +13,6 @@ export default function App() {
                 <Route path="/" element={<Home />}/>
                 <Route path="/new" element={<NewJobItem />}/>
                 <Route path="/edit/:id" element={<NewJobItem />}/>
-                <Route path="/:id" element={<FullJobItem />}/>
             </Routes>
             {/* <Footer /> */}
         </div>

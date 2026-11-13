@@ -1,5 +1,5 @@
-#full-job {
-/*    margin: 3em 0;*/
+#full-job.hide {
+    display: none;
 }
 
 #item {
@@ -8,17 +8,20 @@
     min-width: 380px;
     padding: 1.5em;
     display: flex;
-    margin: 1em 0;
     gap: 1em;
 }
 
-div:has(> .item-value) {
+#body, #item .section > div {
     background-color: var(--primary-color-1);
-    align-items: center;
     padding: 0.25em;
-    flex-wrap: wrap;
-    display: flex;
-    gap: 0.5em;
+}
+
+#item .section > div {
+/*        flex-direction: column;*/
+/*        align-items: center;*/
+    /*    flex-wrap: wrap;*/
+/*        display: flex;*/
+/*        gap: 0.5em;*/
 }
 
 .item-value {
@@ -53,26 +56,27 @@ div:has(> .item-value) {
 
 #item .section {
     justify-content: space-between;
+    flex-wrap: wrap;
     display: flex;
-}
+    gap: 5px;
 
-#item .section > div {
-    justify-content: space-between;
-    display: flex;
 }
 
 #item .section > div > p {
     width: stretch;
 }
+
 #item #body {
     flex-direction: column;
     text-align: left;
-    padding: 0.5em 0;
+/*    padding: 0.5em 0;*/
     display: flex;
     gap: 0.5em;
 }
 
 #item #hyperlinks {
     justify-content: flex-start;
+    align-items: center;
     display: flex;
+    gap: 5px;
 }

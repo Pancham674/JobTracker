@@ -1,13 +1,11 @@
 import { convertToStatusString, type IJobItem } from "../Interfaces.ts";
 import { getAllJobItems } from "../services/api.ts";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../css/JobList.css";
 
-export default function JobList({setJobId}: {setJobId: React.Dispatch<React.SetStateAction<number>>}) {
+export default function JobList({onJobListClick}: {onJobListClick: (c: number) => void}) {
     const [jobItems, setJobItems] = useState<IJobItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const navi = useNavigate();
 
     useEffect(() => {
         async function loadJobItems() {
@@ -40,7 +38,7 @@ export default function JobList({setJobId}: {setJobId: React.Dispatch<React.SetS
                     </thead>
                     <tbody>
                         { jobItems.map(i =>
-                            <tr className="job-item" key={i.id} onClick={() => setJobId(i.id)}>
+                            <tr className="job-item" key={i.id} onClick={() => onJobListClick(i.id)}>
                                 <td className="id">{i.id}</td>
                                 <td className="header">{i.title}</td>
 
