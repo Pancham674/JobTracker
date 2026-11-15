@@ -12,9 +12,16 @@ namespace JobTracker.Server.Controllers
 		readonly JobItemDbContext _context = context; 
 
 		[HttpGet]
-		public IActionResult Get()
+		public async Task<IActionResult> Get(int myPageNumber, int myPageSize)
 		{
-			return Ok(_context.JobItems.ToList());
+			int currentPosition = (myPageNumber - 1) * myPageSize;		//calculate the range of the current page
+			var result = await _context.JobItems.OrderBy(j => j.Id)
+                .Skip(currentPosition)          //skip until we are after our current position
+                .Take(myPageSize)               //take the items that come after the current position, up to the page size
+                .ToListAsync();
+
+			bool moreItemsExist = _context.JobItems.Count() > currentPosition + myPageSize;
+			return Ok(result);
 		}
 
 		[HttpGet("{id}")]
