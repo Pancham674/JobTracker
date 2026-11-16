@@ -13,6 +13,11 @@ export interface IJobItem {
 	id: number,
 }
 
+export interface IPageInfo {
+	records: IJobItem[],
+	hasMoreRecords: boolean
+}
+
 export enum Status {
 	Waiting,
 	Declined,

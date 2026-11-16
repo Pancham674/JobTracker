@@ -1,14 +1,14 @@
 import { deleteJobItem, getAllJobItems, getJobItem } from "../services/api.ts";
 import Interactables from "../components/Interactables.tsx";
 import FullJobItem from "../components/FullJobItem.tsx";
-import type { IJobItem } from "../Interfaces.ts";
+import type { IJobItem, IPageInfo } from "../Interfaces.ts";
 import JobList from "../components/JobList.tsx";
 import { useEffect, useState } from "react";
 import "../css/Home.css";
 
 export default function Home() {
     const [isJobListLoading, setIsJobListLoading] = useState(true);
-    const [jobItems, setJobItems] = useState<IJobItem[]>([]);
+    const [pageInfo, setPageInfo] = useState<IPageInfo>();
     const [jobItem, setJobItem] = useState<IJobItem>();
 
     const searchQueryEl = document.getElementById("search-query")! as HTMLInputElement;
@@ -32,7 +32,7 @@ export default function Home() {
         try {
             const items = await getAllJobItems();
             setIsJobListLoading(false);
-            setJobItems(items);
+            setPageInfo(items);
             console.log("All Job Items received");
         }
         catch (e) {
@@ -75,9 +75,9 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables handleSearch={searchByQuery} jobCount={jobItems.length} handleResetAll={onResetAll}/>
+            <Interactables handleSearch={searchByQuery} jobCount={pageInfo ? pageInfo.records.length : 0} handleResetAll={onResetAll}/>
             { !isJobListLoading ? 
-                <JobList handleJobItemClick={onJobItemClick} list={jobItems}/>
+                <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.records}/>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                
             {jobItem ? 
                 <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>
