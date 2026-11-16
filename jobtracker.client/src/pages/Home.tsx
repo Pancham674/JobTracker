@@ -1,39 +1,40 @@
 import { deleteJobItem, getAllJobItems, getJobItem } from "../services/api.ts";
 import Interactables from "../components/Interactables.tsx";
-import FullJobItem from "../components/FullJobItem.tsx";
 import type { IJobItem, IPageInfo } from "../Interfaces.ts";
+import FullJobItem from "../components/FullJobItem.tsx";
 import JobList from "../components/JobList.tsx";
 import { useEffect, useState } from "react";
 import "../css/Home.css";
 
 export default function Home() {
-    const [isJobListLoading, setIsJobListLoading] = useState(true);
+    const [isPageLoading, setIsPageLoading] = useState(true);
     const [pageInfo, setPageInfo] = useState<IPageInfo>();
     const [jobItem, setJobItem] = useState<IJobItem>();
 
     const searchQueryEl = document.getElementById("search-query")! as HTMLInputElement;
-    
+    const formEl = document.getElementById("interactables") as HTMLFormElement;
+
     useEffect(() => {
-        loadJobItems();
+        loadPageInfo(0);
     }, []);
 
     function searchByQuery() {
         const searchQuery = searchQueryEl.value;
+        const lastId = pageInfo?.records[pageInfo?.records.length -1].id;
         console.log(searchQuery)
+        loadPageInfo(lastId);
     }
 
-    function onResetAll() {
-        loadJobItems();
-        searchQueryEl.value = "";
-
+    function onResetAll(){
+        loadPageInfo(0);
     }
 
-    async function loadJobItems() {
+    async function loadPageInfo(lastId: number) {
         try {
-            const items = await getAllJobItems();
-            setIsJobListLoading(false);
-            setPageInfo(items);
-            console.log("All Job Items received");
+            const data = await getAllJobItems();
+            setIsPageLoading(false);
+            setPageInfo(data);
+            console.log("Page Info gathered");
         }
         catch (e) {
             console.warn(e);
@@ -55,7 +56,9 @@ export default function Home() {
         try {
             await deleteJobItem(jobItem!.id);
             toggleFullJobItem(1);
-            loadJobItems();
+
+            const lastId = pageInfo!.records[pageInfo!.records.length -1].id;
+            loadPageInfo(lastId);
         }
         catch (e) {
             console.warn(e)
@@ -76,7 +79,7 @@ export default function Home() {
     return (
         <div id="home">
             <Interactables handleSearch={searchByQuery} jobCount={pageInfo ? pageInfo.records.length : 0} handleResetAll={onResetAll}/>
-            { !isJobListLoading ? 
+            { !isPageLoading ? 
                 <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.records}/>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                
             {jobItem ? 

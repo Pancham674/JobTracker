@@ -47,3 +47,11 @@ export function convertToLinkTypeString(value: number) {
 	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];
 	return linkTypes[value];
 }
+
+export function getTodaysDate() {
+	const date = new Date();
+	const day = date.getDate().toString();
+	const month = (date.getMonth() +1).toString();
+	const todaysDate = `${date.getFullYear()}-${month.length == 1 ? 0 + month: month}-${day.length == 1 ? 0 + day: day}`;	
+	return todaysDate;
+}
