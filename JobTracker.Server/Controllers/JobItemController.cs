@@ -9,18 +9,31 @@ namespace JobTracker.Server.Controllers
 	[Route("api/[controller]")]
 	public class JobItemController(JobItemDbContext context) : ControllerBase
 	{
-		readonly JobItemDbContext _context = context; 
+		readonly JobItemDbContext _context = context;
 
 		[HttpGet]
-		public async Task<IActionResult> Get(int myPageNumber, int myPageSize)
+		public async Task<IActionResult> Get(Status[]? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
 		{
-			int currentPosition = (myPageNumber - 1) * myPageSize;		//calculate the range of the current page
-			var result = await _context.JobItems.OrderBy(j => j.Id)
-                .Skip(currentPosition)          //skip until we are after our current position
-                .Take(myPageSize)               //take the items that come after the current position, up to the page size
-                .ToListAsync();
+			myStatus ??= Enum.GetValues<Status>();
+			myEndDate = myEndDate == default ? DateOnly.MaxValue : myEndDate;
 
-			bool moreItemsExist = _context.JobItems.Count() > currentPosition + myPageSize;
+			//get all records with only the needed attributes and filter them by...
+			var allFilteredRecords = _context.JobItems.Select(j => new { j.Id, j.Title, j.Company, j.Status, j.ApplyDate })
+				.Where(j => j.Id > myLastShownId &&     //last id in the last shown record
+					myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&   //date range
+					(String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&     //query for title or company name
+					myStatus.Contains(j.Status))    //status
+				.OrderBy(j => j.Id)
+				.Take(myPageSize + 1);
+
+			bool hasMoreRecords = allFilteredRecords.Count() > myPageSize;
+			var filteredRecordsList = await allFilteredRecords.Take(myPageSize).ToListAsync();
+
+			object result = new
+			{
+				records = filteredRecordsList,
+				hasMoreRecords = hasMoreRecords		//so the user can get the next records by btn click
+			};
 			return Ok(result);
 		}
 
