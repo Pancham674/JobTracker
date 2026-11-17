@@ -16,8 +16,9 @@ export interface IJobItem {
 export interface IPageInfo {
 	matchedRecords: IJobItem[],
 	allRecordsCount: number,
-	hasNextPage: boolean
-	hasPrevPage: boolean
+	hasNextPage: boolean,
+	hasPrevPage: boolean,
+	lastIdOfPrevPage: number
 }
 
 export interface Filters {

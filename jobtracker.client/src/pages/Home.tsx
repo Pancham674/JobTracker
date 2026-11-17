@@ -31,15 +31,18 @@ export default function Home() {
     }, []);
 
     function onPageFlip(action: PageActions) {
-        if (action === "Next") {
+        if (action === "Next") {    //grap the highest id to skip for the next page
+            pageFilters.current.lastId = pageInfo!.matchedRecords[pageInfo!.matchedRecords.length -1].id;
+            loadPageInfo(pageFilters.current);
             console.log("next Page");
         }
         else if (action === "Previous") {
+            pageFilters.current.lastId = pageInfo!.lastIdOfPrevPage;
+            loadPageInfo(pageFilters.current);
             console.log("previous Page");
         }
     }
 
-    //save filters in state/ref and re-use them for deleteItem and flipPage, make sure the lastId is correct
     function searchAndFilter(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         const formVals = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -48,7 +51,7 @@ export default function Home() {
             startDate: formVals["start-date"].toString(),
 	        status:  statArr,
 	        pageSize: Number(formVals["page-size"]),
-            lastId: 0,
+            lastId: undefined,
 	        endDate: formVals["end-date"].toString(),
 	        query:  formVals["search-query"].toString()
         };
