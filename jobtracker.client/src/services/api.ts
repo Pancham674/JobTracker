@@ -1,19 +1,18 @@
-import type { IJobItem } from "../Interfaces";
+import type { Filters, IJobItem } from "../Interfaces";
 
 const BASE_URL = "http://localhost:5155/api/JobItem";
 
-export async function getAllJobItems(status: number[] | undefined, startDate: string | undefined, endDate: string| undefined,
-    lastId: number | undefined, pageSize: number | undefined, query: string | undefined){
+export async function getAllJobItems(pageFilters: Filters){
     const options: RequestInit = { method: 'GET'}
     const url = new URL(BASE_URL);
 
-    if (pageSize) url.searchParams.set("myPageSize", pageSize.toString());
-    if (lastId) url.searchParams.set("myLastShownId", lastId.toString());
+    if (pageFilters.pageSize) url.searchParams.set("myPageSize", pageFilters.pageSize.toString());
+    if (pageFilters.lastId) url.searchParams.set("myLastShownId", pageFilters.lastId.toString());
 
-    if (query) url.searchParams.set("myQuery", query);
-    if (status) url.searchParams.set("myStatus", JSON.stringify(status));
-    if (endDate) url.searchParams.set("myEndDate", endDate.toString());
-    if (startDate) url.searchParams.set("myStartDate", startDate.toString());
+    if (pageFilters.query) url.searchParams.set("myQuery", pageFilters.query);
+    if (pageFilters.status) url.searchParams.set("myStatus", JSON.stringify(pageFilters.status));
+    if (pageFilters.endDate) url.searchParams.set("myEndDate", pageFilters.endDate.toString());
+    if (pageFilters.startDate) url.searchParams.set("myStartDate", pageFilters.startDate.toString());
     
     return await getData(url.toString(), options);
 }

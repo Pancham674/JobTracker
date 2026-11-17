@@ -1,14 +1,14 @@
-import { convertToLinkTypeString, convertToStatusString, convertToWorkingModelString, type IJobItem } from "../Interfaces.ts";
+import { convertToLinkTypeString, convertToStatusString, convertToWorkingModelString, type IJobItem, type ToggleActions } from "../Interfaces.ts";
 import { useNavigate } from "react-router-dom";
 import "../css/FullJobItem.css";
 
-export default function FullJobItem({toggleMe, deleteItem, jobItem}: {toggleMe: (a: number) => void, deleteItem: () => void, jobItem: IJobItem}) {
+export default function FullJobItem({toggleMe, deleteItem, jobItem}: {toggleMe: (a: ToggleActions) => void, deleteItem: () => void, jobItem: IJobItem}) {
     const navi = useNavigate();
 
     return (
         <div id="full-job">
             <div id="btns">
-                <button onClick={() => toggleMe(1)}>Close</button>
+                <button onClick={() => toggleMe("Hide")}>Close</button>
                 <button id="edit" onClick={() => navi(`/edit/${jobItem.id}`)}>Edit</button>
                 <button id="delete" onClick={deleteItem}>Delete</button>
             </div>

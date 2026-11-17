@@ -20,6 +20,15 @@ export interface IPageInfo {
 	hasPrevPage: boolean
 }
 
+export interface Filters {
+	startDate: string | undefined,
+	status: number[] | undefined,
+	pageSize: number | undefined,
+    lastId: number | undefined,
+	endDate: string| undefined,
+	query: string | undefined
+}
+
 export enum Status {
 	Waiting,
 	Declined,
@@ -46,6 +55,8 @@ export function convertToWorkingModelString(value: number) {
 export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
 
 export type PageActions = "Previous" | "Next";
+
+export type ToggleActions = "Hide" | "Show";
 
 export function convertToLinkTypeString(value: number) {
 	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];

@@ -1,10 +1,10 @@
+import type { Filters, IJobItem, IPageInfo, PageActions, ToggleActions } from "../Interfaces.ts";
 import { deleteJobItem, getAllJobItems, getJobItem } from "../services/api.ts";
-import type { IJobItem, IPageInfo, PageActions } from "../Interfaces.ts";
 import Interactables from "../components/Interactables.tsx";
 import FullJobItem from "../components/FullJobItem.tsx";
 import PageButtons from "../components/PageButtons.tsx";
+import { useEffect, useRef, useState } from "react";
 import JobList from "../components/JobList.tsx";
-import { useEffect, useState } from "react";
 import "../css/Home.css";
 
 export default function Home() {
@@ -12,11 +12,20 @@ export default function Home() {
     const [pageInfo, setPageInfo] = useState<IPageInfo>();
     const [jobItem, setJobItem] = useState<IJobItem>();
     const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+    
+    const pageFilters = useRef<Filters>({       //use object to save the filters and reuse them for page flipping, deleting, etc.
+        startDate: undefined,
+	    status:  undefined,
+	    pageSize: undefined,
+        lastId: undefined,
+	    endDate: undefined,
+	    query:  undefined
+    });
 
     useEffect(() => {
         async function onFirstRender() {
             await sleep(1000);  //wait for server to start before fetching
-            loadPageInfo(undefined, undefined, undefined, undefined, undefined, undefined);
+            loadPageInfo(pageFilters.current);
         }
         onFirstRender();
     }, []);
@@ -35,20 +44,34 @@ export default function Home() {
         e.preventDefault();
         const formVals = Object.fromEntries(new FormData(e.currentTarget).entries());
         const statArr = Array.from((e.currentTarget["status"] as HTMLSelectElement).selectedOptions).map(o => Number(o.value));
-        loadPageInfo(statArr, formVals["start-date"].toString(), formVals["end-date"].toString(),
-            0, Number(formVals["page-size"]), formVals["search-query"].toString());
+        pageFilters.current = {
+            startDate: formVals["start-date"].toString(),
+	        status:  statArr,
+	        pageSize: Number(formVals["page-size"]),
+            lastId: 0,
+	        endDate: formVals["end-date"].toString(),
+	        query:  formVals["search-query"].toString()
+        };
+        loadPageInfo(pageFilters.current);
     }
 
     function onResetAll(){
-        loadPageInfo(undefined, undefined, undefined, 0, 10, undefined);
+        pageFilters.current = {
+            startDate: undefined,
+	        status:  undefined,
+	        pageSize: undefined,
+            lastId: undefined,
+	        endDate: undefined,
+	        query:  undefined
+        };
+        loadPageInfo(pageFilters.current);
     }
 
-    async function loadPageInfo(status: number[] | undefined, startDate: string | undefined, endDate: string| undefined,
-    lastId: number | undefined, pageSize: number| undefined, query: string | undefined) {
+    async function loadPageInfo(pageFilters: Filters) {
         try {
-            const data = await getAllJobItems(status, startDate, endDate, lastId, pageSize, query);
+            const data = await getAllJobItems(pageFilters);
             setIsPageLoading(false);
-            toggleFullJobItem(1);
+            toggleFullJobItem("Hide");
             setPageInfo(data);
             console.log("Page Info gathered");
         }
@@ -58,34 +81,36 @@ export default function Home() {
     }
 
     async function onJobItemClick(clickedId: number) {
-        if (jobItem?.id === clickedId) toggleFullJobItem(2);
+        if (jobItem?.id === clickedId) toggleFullJobItem("Show");
         else if (jobItem?.id != clickedId) {
             try {
                 setJobItem(await getJobItem(clickedId));
             } catch (e) { console.warn(e); }
 
-            toggleFullJobItem(2)
+            toggleFullJobItem("Show")
         }
     }
 
     async function deleteItem() {
         try {
             await deleteJobItem(jobItem!.id);
-            toggleFullJobItem(1);
-            loadPageInfo(undefined, undefined, undefined, 0, 10, undefined);
+            toggleFullJobItem("Hide");
+            //since we stay on the same page, the items after this id will go up by one
+            pageFilters.current.lastId = pageInfo!.matchedRecords[0].id -1; 
+            loadPageInfo(pageFilters.current);
         }
         catch (e) {
             console.warn(e)
         }
     }
 
-    function toggleFullJobItem(action: number) {
+    function toggleFullJobItem(action: ToggleActions) {
         const fullJobEl: HTMLDivElement = document.getElementById("full-job") as HTMLDivElement;
         if (!fullJobEl) return;
         
-        if (action == 1) {          //hide by adding
+        if (action == "Hide") {          //hide by adding
             fullJobEl.classList.add("hide");
-        } else if (action == 2) {   //show by removing
+        } else if (action == "Show") {   //show by removing
             fullJobEl.classList.remove("hide");
         }
     }   

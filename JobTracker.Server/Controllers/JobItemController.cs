@@ -33,12 +33,12 @@ namespace JobTracker.Server.Controllers
 				statusEnums.Contains(j.Status))    //status
 			.OrderBy(j => j.Id);
 
-			bool hasPrevPage = allFilteredRecords.Any(j => j.Id< myLastShownId);
+			bool hasPrevPage = allFilteredRecords.Any(j => j.Id < myLastShownId);	//if we skip any records then we can go to a previous page
             int allRecordsCount = allFilteredRecords.Count();
             bool hasNextPage = allRecordsCount > myPageSize;
 
             //go past the id of the last shown record and only contain the page size
-            allFilteredRecords = (IOrderedQueryable<JobItemDTO>)allFilteredRecords.Where(j=>j.Id > myLastShownId).Take(myPageSize);
+            allFilteredRecords = (IOrderedQueryable<JobItemDTO>)allFilteredRecords.Where(j => j.Id > myLastShownId).Take(myPageSize);
 			var filteredRecordsList = await allFilteredRecords.Take(myPageSize).ToListAsync();
 
 			return new JobPageResult(filteredRecordsList, hasNextPage, hasPrevPage, allRecordsCount);
