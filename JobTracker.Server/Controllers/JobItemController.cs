@@ -37,7 +37,7 @@ namespace JobTracker.Server.Controllers
 			var filteredRecordsList = await allFilteredRecords.Where(j => j.Id > myLastShownId)
 															  .Take(myPageSize)
 															  .ToListAsync();
-            //take the last id of the previous page in case the user want to go back (will in exclude "missing" ids)
+            //take the last id of the previous page in case the user want to go back (will in exclude "missing"/deleted ids)
             int lastIdOfPrevPage = allFilteredRecords.OrderByDescending(j => j.Id)
 													 .Where(j => j.Id < myLastShownId)
 													 .Take(myPageSize)

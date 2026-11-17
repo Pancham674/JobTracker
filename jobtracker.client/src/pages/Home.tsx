@@ -47,6 +47,8 @@ export default function Home() {
         e.preventDefault();
         const formVals = Object.fromEntries(new FormData(e.currentTarget).entries());
         const statArr = Array.from((e.currentTarget["status"] as HTMLSelectElement).selectedOptions).map(o => Number(o.value));
+        const prevFilters = pageFilters.current;
+        
         pageFilters.current = {
             startDate: formVals["start-date"].toString(),
 	        status:  statArr,
@@ -55,7 +57,9 @@ export default function Home() {
 	        endDate: formVals["end-date"].toString(),
 	        query:  formVals["search-query"].toString()
         };
-        loadPageInfo(pageFilters.current);
+
+        //if nothing changed then do nothing
+        if (JSON.stringify(prevFilters) !== JSON.stringify(pageFilters.current)) loadPageInfo(pageFilters.current);
     }
 
     function onResetAll(){
@@ -96,8 +100,9 @@ export default function Home() {
 
     async function deleteItem() {
         try {
-            await deleteJobItem(jobItem!.id);
             toggleFullJobItem("Hide");
+            await deleteJobItem(jobItem!.id);
+
             //since we stay on the same page, the items after this id will go up by one
             pageFilters.current.lastId = pageInfo!.matchedRecords[0].id -1; 
             loadPageInfo(pageFilters.current);
@@ -110,12 +115,7 @@ export default function Home() {
     function toggleFullJobItem(action: ToggleActions) {
         const fullJobEl: HTMLDivElement = document.getElementById("full-job") as HTMLDivElement;
         if (!fullJobEl) return;
-        
-        if (action == "Hide") {          //hide by adding
-            fullJobEl.classList.add("hide");
-        } else if (action == "Show") {   //show by removing
-            fullJobEl.classList.remove("hide");
-        }
+        fullJobEl.hidden = action == "Hide";
     }   
 
     return (
