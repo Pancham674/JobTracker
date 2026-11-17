@@ -1,9 +1,9 @@
-import type { IJobItem, Status } from "../Interfaces";
+import type { IJobItem } from "../Interfaces";
 
 const BASE_URL = "http://localhost:5155/api/JobItem";
 
-export async function getAllJobItems(status: Status | undefined, startDate: Date | undefined, endDate: Date | undefined,
-    lastId: number, pageSize: number, query: string){
+export async function getAllJobItems(status: number[] | undefined, startDate: string | undefined, endDate: string| undefined,
+    lastId: number | undefined, pageSize: number | undefined, query: string | undefined){
     const options: RequestInit = { method: 'GET'}
     const url = new URL(BASE_URL);
 
@@ -11,7 +11,7 @@ export async function getAllJobItems(status: Status | undefined, startDate: Date
     if (lastId) url.searchParams.set("myLastShownId", lastId.toString());
 
     if (query) url.searchParams.set("myQuery", query);
-    if (status) url.searchParams.set("myStatus", status.toString());
+    if (status) url.searchParams.set("myStatus", JSON.stringify(status));
     if (endDate) url.searchParams.set("myEndDate", endDate.toString());
     if (startDate) url.searchParams.set("myStartDate", startDate.toString());
     

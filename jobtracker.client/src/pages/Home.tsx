@@ -10,29 +10,35 @@ export default function Home() {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [pageInfo, setPageInfo] = useState<IPageInfo>();
     const [jobItem, setJobItem] = useState<IJobItem>();
-
-    const searchQueryEl = document.getElementById("search-query")! as HTMLInputElement;
-    const formEl = document.getElementById("interactables") as HTMLFormElement;
+    const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
-        loadPageInfo(0);
+        async function onFirstRender() {
+            await sleep(1000);  //wait for server to start before fetching
+            loadPageInfo(undefined, undefined, undefined, undefined, undefined, undefined);
+        }
+        onFirstRender();
     }, []);
 
-    function searchByQuery() {
-        const searchQuery = searchQueryEl.value;
-        const lastId = pageInfo?.records[pageInfo?.records.length -1].id;
-        console.log(searchQuery)
-        loadPageInfo(lastId);
+    //save filters in state/ref and re-use them for deleteItem and flipPage, make sure the lastId is correct
+    function searchAndFilter(e: React.SubmitEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const formVals = Object.fromEntries(new FormData(e.currentTarget).entries());
+        const statArr = Array.from((e.currentTarget["status"] as HTMLSelectElement).selectedOptions).map(o => Number(o.value));
+        loadPageInfo(statArr, formVals["start-date"].toString(), formVals["end-date"].toString(),
+            0, Number(formVals["page-size"]), formVals["search-query"].toString());
     }
 
     function onResetAll(){
-        loadPageInfo(0);
+        loadPageInfo(undefined, undefined, undefined, 0, 10, undefined);
     }
 
-    async function loadPageInfo(lastId: number) {
+    async function loadPageInfo(status: number[] | undefined, startDate: string | undefined, endDate: string| undefined,
+    lastId: number | undefined, pageSize: number| undefined, query: string | undefined) {
         try {
-            const data = await getAllJobItems();
+            const data = await getAllJobItems(status, startDate, endDate, lastId, pageSize, query);
             setIsPageLoading(false);
+            toggleFullJobItem(1);
             setPageInfo(data);
             console.log("Page Info gathered");
         }
@@ -58,7 +64,7 @@ export default function Home() {
             toggleFullJobItem(1);
 
             const lastId = pageInfo!.records[pageInfo!.records.length -1].id;
-            loadPageInfo(lastId);
+            loadPageInfo(undefined, undefined, undefined, lastId, 10, undefined);
         }
         catch (e) {
             console.warn(e)
@@ -78,7 +84,7 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables handleSearch={searchByQuery} jobCount={pageInfo ? pageInfo.records.length : 0} handleResetAll={onResetAll}/>
+            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.records.length : 0} handleResetAll={onResetAll}/>
             { !isPageLoading ? 
                 <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.records}/>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                

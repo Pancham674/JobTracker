@@ -13,10 +13,11 @@ namespace JobTracker.Server.Controllers
         public record JobPageResult(List<JobItemDTO> Records, bool HasMoreRecords);
 
         [HttpGet]
-		public async Task<JobPageResult> Get(Status[]? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
+		public async Task<JobPageResult> Get(string? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
 		{
-			myStatus ??= Enum.GetValues<Status>();
-			myEndDate = myEndDate == default ? DateOnly.MaxValue : myEndDate;
+			int[] statusArr = String.IsNullOrEmpty(myStatus) ? new int[]{ 0, 1, 2, 3 } : JsonSerializer.Deserialize<int[]>(myStatus)!;
+			Status[] statusEnums = statusArr.Cast<Status>().ToArray();
+            myEndDate = myEndDate == default ? DateOnly.MaxValue : myEndDate;
 
 			//get all records with only the needed attributes and filter them by...
 			var allFilteredRecords = _context.JobItems.Select(j => new JobItemDTO
@@ -30,7 +31,7 @@ namespace JobTracker.Server.Controllers
 				.Where(j => j.Id > myLastShownId &&     //last id in the last shown record
 					myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&   //date range
 					(String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&     //query for title or company name
-					myStatus.Contains(j.Status))    //status
+					statusEnums.Contains(j.Status))    //status
 				.OrderBy(j => j.Id)
 				.Take(myPageSize + 1);
 
