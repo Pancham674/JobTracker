@@ -14,7 +14,8 @@ export interface IJobItem {
 }
 
 export interface IPageInfo {
-	records: IJobItem[],
+	matchedRecords: IJobItem[],
+	allRecordsCount: number,
 	hasMoreRecords: boolean
 }
 

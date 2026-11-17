@@ -10,7 +10,7 @@ namespace JobTracker.Server.Controllers
 	public class JobItemController(JobItemDbContext context) : ControllerBase
 	{
 		readonly JobItemDbContext _context = context;
-        public record JobPageResult(List<JobItemDTO> Records, bool HasMoreRecords);
+        public record JobPageResult(List<JobItemDTO> MatchedRecords, bool HasMoreRecords, int AllRecordsCount);
 
         [HttpGet]
 		public async Task<JobPageResult> Get(string? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
@@ -21,24 +21,26 @@ namespace JobTracker.Server.Controllers
 
 			//get all records with only the needed attributes and filter them by...
 			var allFilteredRecords = _context.JobItems.Select(j => new JobItemDTO
-				{
-					Id = j.Id,
-					Title = j.Title,
-					Company = j.Company,
-					Status = j.Status,
-					ApplyDate = j.ApplyDate
-				})
+			{
+				Id = j.Id,
+				Title = j.Title,
+				Company = j.Company,
+				Status = j.Status,
+				ApplyDate = j.ApplyDate
+			})
 				.Where(j => j.Id > myLastShownId &&     //last id in the last shown record
 					myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&   //date range
 					(String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&     //query for title or company name
 					statusEnums.Contains(j.Status))    //status
-				.OrderBy(j => j.Id)
-				.Take(myPageSize + 1);
+				.OrderBy(j => j.Id);
 
-			bool hasMoreRecords = allFilteredRecords.Count() > myPageSize;
+			int allRecordsCount = allFilteredRecords.Count();
+            bool hasMoreRecords = allRecordsCount > myPageSize;
+
+			allFilteredRecords = (IOrderedQueryable<JobItemDTO>)allFilteredRecords.Take(myPageSize);
 			var filteredRecordsList = await allFilteredRecords.Take(myPageSize).ToListAsync();
 
-			return new JobPageResult(filteredRecordsList, hasMoreRecords);
+			return new JobPageResult(filteredRecordsList, hasMoreRecords, allRecordsCount);
 		}
 
 		[HttpGet("{id}")]

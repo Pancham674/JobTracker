@@ -62,9 +62,7 @@ export default function Home() {
         try {
             await deleteJobItem(jobItem!.id);
             toggleFullJobItem(1);
-
-            const lastId = pageInfo!.records[pageInfo!.records.length -1].id;
-            loadPageInfo(undefined, undefined, undefined, lastId, 10, undefined);
+            loadPageInfo(undefined, undefined, undefined, 0, 10, undefined);
         }
         catch (e) {
             console.warn(e)
@@ -84,9 +82,9 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.records.length : 0} handleResetAll={onResetAll}/>
+            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.allRecordsCount : 0} handleResetAll={onResetAll}/>
             { !isPageLoading ? 
-                <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.records}/>
+                <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.matchedRecords}/>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                
             {jobItem ? 
                 <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>
