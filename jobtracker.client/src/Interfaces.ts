@@ -16,7 +16,8 @@ export interface IJobItem {
 export interface IPageInfo {
 	matchedRecords: IJobItem[],
 	allRecordsCount: number,
-	hasMoreRecords: boolean
+	hasNextPage: boolean
+	hasPrevPage: boolean
 }
 
 export enum Status {
@@ -43,6 +44,8 @@ export function convertToWorkingModelString(value: number) {
 }
 
 export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
+
+export type PageActions = "Previous" | "Next";
 
 export function convertToLinkTypeString(value: number) {
 	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];

@@ -1,7 +1,8 @@
 import { deleteJobItem, getAllJobItems, getJobItem } from "../services/api.ts";
+import type { IJobItem, IPageInfo, PageActions } from "../Interfaces.ts";
 import Interactables from "../components/Interactables.tsx";
-import type { IJobItem, IPageInfo } from "../Interfaces.ts";
 import FullJobItem from "../components/FullJobItem.tsx";
+import PageButtons from "../components/PageButtons.tsx";
 import JobList from "../components/JobList.tsx";
 import { useEffect, useState } from "react";
 import "../css/Home.css";
@@ -19,6 +20,15 @@ export default function Home() {
         }
         onFirstRender();
     }, []);
+
+    function onPageFlip(action: PageActions) {
+        if (action === "Next") {
+            console.log("next Page");
+        }
+        else if (action === "Previous") {
+            console.log("previous Page");
+        }
+    }
 
     //save filters in state/ref and re-use them for deleteItem and flipPage, make sure the lastId is correct
     function searchAndFilter(e: React.SubmitEvent<HTMLFormElement>) {
@@ -84,7 +94,10 @@ export default function Home() {
         <div id="home">
             <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.allRecordsCount : 0} handleResetAll={onResetAll}/>
             { !isPageLoading ? 
-                <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.matchedRecords}/>
+                <>
+                    <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.matchedRecords}/>
+                    <PageButtons hasPrevPage={pageInfo!.hasPrevPage} hasNextPage={pageInfo!.hasNextPage} handlePageFlip={onPageFlip} />
+                </>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                
             {jobItem ? 
                 <FullJobItem toggleMe={toggleFullJobItem} deleteItem={deleteItem} jobItem={jobItem}/>

@@ -10,7 +10,7 @@ namespace JobTracker.Server.Controllers
 	public class JobItemController(JobItemDbContext context) : ControllerBase
 	{
 		readonly JobItemDbContext _context = context;
-        public record JobPageResult(List<JobItemDTO> MatchedRecords, bool HasMoreRecords, int AllRecordsCount);
+        public record JobPageResult(List<JobItemDTO> MatchedRecords, bool HasNextPage, bool HasPrevPage, int AllRecordsCount);
 
         [HttpGet]
 		public async Task<JobPageResult> Get(string? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
@@ -28,19 +28,20 @@ namespace JobTracker.Server.Controllers
 				Status = j.Status,
 				ApplyDate = j.ApplyDate
 			})
-				.Where(j => j.Id > myLastShownId &&     //last id in the last shown record
-					myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&   //date range
-					(String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&     //query for title or company name
-					statusEnums.Contains(j.Status))    //status
-				.OrderBy(j => j.Id);
+			.Where(j => myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&   //date range
+				(String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&     //query for title or company name
+				statusEnums.Contains(j.Status))    //status
+			.OrderBy(j => j.Id);
 
-			int allRecordsCount = allFilteredRecords.Count();
-            bool hasMoreRecords = allRecordsCount > myPageSize;
+			bool hasPrevPage = allFilteredRecords.Any(j => j.Id< myLastShownId);
+            int allRecordsCount = allFilteredRecords.Count();
+            bool hasNextPage = allRecordsCount > myPageSize;
 
-			allFilteredRecords = (IOrderedQueryable<JobItemDTO>)allFilteredRecords.Take(myPageSize);
+            //go past the id of the last shown record and only contain the page size
+            allFilteredRecords = (IOrderedQueryable<JobItemDTO>)allFilteredRecords.Where(j=>j.Id > myLastShownId).Take(myPageSize);
 			var filteredRecordsList = await allFilteredRecords.Take(myPageSize).ToListAsync();
 
-			return new JobPageResult(filteredRecordsList, hasMoreRecords, allRecordsCount);
+			return new JobPageResult(filteredRecordsList, hasNextPage, hasPrevPage, allRecordsCount);
 		}
 
 		[HttpGet("{id}")]

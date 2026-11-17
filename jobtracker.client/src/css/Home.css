@@ -2,7 +2,7 @@
     flex-direction: column;
     min-width: 380px;
     display: flex;
-    gap: 1em;
+/*    gap: 1em;*/
 }
 
 .loading {
