@@ -7,6 +7,7 @@ import "../css/Interactables.css";
 export default function Interactables({jobCount, handleSearchAndFilter, handleResetAll}: 
     {jobCount: number, handleSearchAndFilter: (e: React.SubmitEvent<HTMLFormElement>) => void, handleResetAll: () => void}) {
   const [isFilterHidden, setIsFilterHidden] = useState(true);
+  const todaysDate = getTodaysDate();
   const navi = useNavigate();
 
   return (
@@ -34,11 +35,13 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
 
             <div id="dates">
                 <label>Start date
-                    <input type="date" id="start-date" name="start-date" defaultValue={"0001-01-01"}/>
+                    <input type="date" id="start-date" name="start-date" defaultValue={"0001-01-01"}
+                        max={todaysDate} onChange={(e) => onDateChanged(e)}/>
                 </label>
         
                 <label>End date
-                    <input type="date" id="end-date" name="end-date"defaultValue={getTodaysDate()}/>
+                    <input type="date" id="end-date" name="end-date"defaultValue={todaysDate}
+                        max={todaysDate} onChange={(e) => onDateChanged(e)}/>
                 </label>
             </div>
             <div id="page-reset">
@@ -55,4 +58,18 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
         </div>
     </form>
   );
+}
+
+/**Will limit the start date max and end date min values depending on which control was changed*/
+function onDateChanged(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
+    const input = e.currentTarget as HTMLInputElement;
+    
+    if (input.id === "start-date") {    //limit the end date min value
+        const endDate = document.getElementById("end-date") as HTMLInputElement;
+        endDate.min = input.value;
+    }
+    else {  //limit the start date max value
+        const startDate = document.getElementById("start-date") as HTMLInputElement;
+        startDate.max = input.value;
+    }
 }
