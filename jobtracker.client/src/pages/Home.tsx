@@ -31,31 +31,30 @@ export default function Home() {
     }, []);
 
     function onPageFlip(action: PageActions) {
-        if (action === "Next") {    //grap the highest id to skip for the next page
+        if (action === "Next") {    //current highest id is the anchor for the next page
             pageFilters.current.lastId = pageInfo!.matchedRecords[pageInfo!.matchedRecords.length -1].id;
             loadPageInfo(pageFilters.current);
-            console.log("next Page");
         }
         else if (action === "Previous") {
             pageFilters.current.lastId = pageInfo!.lastIdOfPrevPage;
             loadPageInfo(pageFilters.current);
-            console.log("previous Page");
         }
     }
 
     function searchAndFilter(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
-        const formVals = Object.fromEntries(new FormData(e.currentTarget).entries());
+        //grap all formdata and use it for the filter
+        const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
         const statArr = Array.from((e.currentTarget["status"] as HTMLSelectElement).selectedOptions).map(o => Number(o.value));
         const prevFilters = pageFilters.current;
         
         pageFilters.current = {
-            startDate: formVals["start-date"].toString(),
+            startDate: formData["start-date"].toString(),
 	        status:  statArr,
-	        pageSize: Number(formVals["page-size"]),
+	        pageSize: Number(formData["page-size"]),
             lastId: undefined,
-	        endDate: formVals["end-date"].toString(),
-	        query:  formVals["search-query"].toString()
+	        endDate: formData["end-date"].toString(),
+	        query:  formData["search-query"].toString()
         };
 
         //if nothing changed then do nothing
