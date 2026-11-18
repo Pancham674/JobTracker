@@ -9,7 +9,6 @@ import "../css/Home.css";
 
 export default function Home() {
     const [isPageLoading, setIsPageLoading] = useState(true);
-    const [isFilterElementHidden, setIsFilterElementHidden] = useState(true);
     const [pageInfo, setPageInfo] = useState<IPageInfo>();
     const [jobItem, setJobItem] = useState<IJobItem>();
     const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -121,8 +120,7 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.allRecordsCount : 0} handleResetAll={onResetAll} 
-                isFilterHidden={isFilterElementHidden} handleFilterToggle={setIsFilterElementHidden}/>
+            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.allRecordsCount : 0} handleResetAll={onResetAll} />
             { !isPageLoading ? 
                 <>
                     <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.matchedRecords}/>

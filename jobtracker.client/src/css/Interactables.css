@@ -4,6 +4,7 @@
     padding: 0.5rem 1rem;
     align-self: center;
     width: fit-content;
+    position: relative;
 }
 
 #interactables, #interactables div {
@@ -30,8 +31,21 @@
     display: flex;
 }
 
-#interactables label, #interactables input, #interactables select, #interactables option {
-/*    font-size: 80%;*/
+#interactables label, #interactables input {
+    font-size: 0.8em;
+}
+
+
+#interactables input[type="date"] {
+    font-size: 0.7rem;
+}
+
+#status option, #page-size {
+    font-size: 0.9em;
+}
+
+#interactables button {
+    font-size: 0.65em;
 }
 
 #interactables label select, #interactables label input, #interactables button {
@@ -41,32 +55,42 @@
 #interactables option {
     color: var(--primary-color-5);
     background-color: inherit;
+    padding: 0.25em 0.5em;
     width: stretch;
 }
 
-#status {
-    padding: 0.5em;
+select#status {
     overflow: hidden;
+    padding: 0;
 }
 
 #interactables option:checked {
     background-color: white;
 }
 
-#interactables button{
-    
-}
-
 #interactables div#bottom-part {
-    justify-content: space-between;
-    flex-wrap: wrap;
+    border: 1px solid var(--primary-color-5);
+    border-top: 1px dashed var(--primary-color-5);
+    justify-content: space-around;
+    background-color: inherit;
+    padding-bottom: 0.5em;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    gap: 0;
 }
 
 #bottom-part[hidden] {
     display: none;
 }
 
-#interactables div#dates {
+#interactables div#dates, div#page-reset {
     flex-direction: column;
     width: fit-content;
+    gap: 0;
+}
+
+div#page-reset {
+    justify-content: space-around;
+    height: stretch;
 }

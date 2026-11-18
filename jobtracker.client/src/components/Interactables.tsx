@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import "../css/Interactables.css";
 import { getTodaysDate } from "../Interfaces";
+import { useState } from "react";
 
-export default function Interactables({jobCount, handleSearchAndFilter, handleResetAll, isFilterHidden, handleFilterToggle}: 
-    {jobCount: number, handleSearchAndFilter: (e: React.SubmitEvent<HTMLFormElement>) => void, handleResetAll: () => void,
-        isFilterHidden: boolean, handleFilterToggle: React.Dispatch<React.SetStateAction<boolean>>}) {
+import "../css/Interactables.css";
+
+export default function Interactables({jobCount, handleSearchAndFilter, handleResetAll}: 
+    {jobCount: number, handleSearchAndFilter: (e: React.SubmitEvent<HTMLFormElement>) => void, handleResetAll: () => void}) {
+  const [isFilterHidden, setIsFilterHidden] = useState(true);
   const navi = useNavigate();
 
   return (
@@ -12,12 +14,12 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
         <h2 id="app-count">Application count: {jobCount}</h2>
 
         <div id="top-part">
-            <button id="create-new" onClick={() => navi("/new")}>
+            <button type="button" id="create-new" onClick={() => navi("/new")}>
                 Create new Job item
             </button>
-            <input type="text" id="search-query" name="search-query" placeholder="Search by title and company"/> 
+            <input type="text" id="search-query" name="search-query" placeholder="Search by title or company"/> 
             <button type="submit">Search</button>
-            <button id="toggle-filter" type="button" onClick={() => handleFilterToggle(isHidden => !isHidden)}>{`${isFilterHidden ? "Show" : "Hide"}`} filters</button>
+            <button id="toggle-filter" type="button" onClick={() => setIsFilterHidden(isHidden => !isHidden)}>{`${isFilterHidden ? "Show" : "Hide"}`} filters</button>
         </div>
 
         <div id="bottom-part" hidden={isFilterHidden}>
@@ -39,16 +41,17 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
                     <input type="date" id="end-date" name="end-date"defaultValue={getTodaysDate()}/>
                 </label>
             </div>
-        
-            <label>Page size
-                <select id="page-size" name="page-size" defaultValue={10}>
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
-                </select> 
-            </label>
+            <div id="page-reset">
+                <label>Page size
+                    <select id="page-size" name="page-size" defaultValue={10}>
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                    </select> 
+                </label>
 
-            <button id="reset-btn" type="reset" onClick={handleResetAll}>Reset all</button>
+                <button id="reset-btn" type="reset" onClick={handleResetAll}>Reset all</button>
+            </div>
         </div>
     </form>
   );
