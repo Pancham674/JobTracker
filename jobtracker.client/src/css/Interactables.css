@@ -1,18 +1,72 @@
 #interactables {
     background-color: var(--primary-color-1);
-    grid-auto-flow: column;
-    padding: 0.25em 0.5em;
-    align-items: center;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    align-self: center;
     width: fit-content;
-    display: grid;
-    gap: 5px;
 }
 
-#interactables h2 {
+#interactables, #interactables div {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+#interactables div{
+    width: 100%;
+}
+
+#app-count {
+    border-bottom: 1px var(--primary-color-5) solid;
     color: var(--primary-color-5);
+    font-size: 1.1rem;
+    width: stretch;
     margin: 0;
 }
 
-button#create-new {
+#interactables label {
+    flex-direction: column;
+    display: flex;
+}
+
+#interactables label, #interactables input, #interactables select, #interactables option {
+/*    font-size: 80%;*/
+}
+
+#interactables label select, #interactables label input, #interactables button {
     margin: 0;
+}
+
+#interactables option {
+    color: var(--primary-color-5);
+    background-color: inherit;
+    width: stretch;
+}
+
+#status {
+    padding: 0.5em;
+    overflow: hidden;
+}
+
+#interactables option:checked {
+    background-color: white;
+}
+
+#interactables button{
+    
+}
+
+#interactables div#bottom-part {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#bottom-part[hidden] {
+    display: none;
+}
+
+#interactables div#dates {
+    flex-direction: column;
+    width: fit-content;
 }
