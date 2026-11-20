@@ -35,7 +35,7 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
 
             <div id="dates">
                 <label>Start date
-                    <input type="date" id="start-date" name="start-date" defaultValue={"0001-01-01"}
+                    <input type="date" id="start-date" name="start-date" defaultValue={`${new Date().getFullYear() -1}-01-01`}
                         max={todaysDate} onChange={(e) => onDateChanged(e)}/>
                 </label>
         
