@@ -1,10 +1,20 @@
-import type { IJobItem } from "../Interfaces";
+import type { Filters, IJobItem } from "../Interfaces";
 
 const BASE_URL = "http://localhost:5155/api/JobItem";
 
-export async function getAllJobItems() {
+export async function getAllJobItems(pageFilters: Filters){
     const options: RequestInit = { method: 'GET'}
-    return await getData(BASE_URL, options);
+    const url = new URL(BASE_URL);
+
+    if (pageFilters.pageSize) url.searchParams.set("myPageSize", pageFilters.pageSize.toString());
+    if (pageFilters.lastId) url.searchParams.set("myLastShownId", pageFilters.lastId.toString());
+
+    if (pageFilters.query) url.searchParams.set("myQuery", pageFilters.query);
+    if (pageFilters.status) url.searchParams.set("myStatus", JSON.stringify(pageFilters.status));
+    if (pageFilters.endDate) url.searchParams.set("myEndDate", pageFilters.endDate.toString());
+    if (pageFilters.startDate) url.searchParams.set("myStartDate", pageFilters.startDate.toString());
+    
+    return await getData(url.toString(), options);
 }
 
 export async function getJobItem(id: number) {
