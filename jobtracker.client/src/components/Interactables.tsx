@@ -4,15 +4,15 @@ import { useState } from "react";
 
 import "../css/Interactables.css";
 
-export default function Interactables({jobCount, handleSearchAndFilter, handleResetAll, allJobCount}: 
-    {jobCount: number, handleSearchAndFilter: (e: React.SubmitEvent<HTMLFormElement>) => void, handleResetAll: () => void, allJobCount: number}) {
+export default function Interactables({jobCount, handleSearchAndFilter, handleResetAll, unfilteredItemsCount}: 
+    {jobCount: number, handleSearchAndFilter: (e: React.SubmitEvent<HTMLFormElement>) => void, handleResetAll: () => void, unfilteredItemsCount: number}) {
   const [isFilterHidden, setIsFilterHidden] = useState(true);
   const todaysDate = getTodaysDate();
   const navi = useNavigate();
 
   return (
       <form id="interactables" onSubmit={handleSearchAndFilter}>
-        <h2 id="app-count">Application count: {jobCount !== allJobCount ? `${jobCount}/${allJobCount}` :`${jobCount}`}</h2>
+        <h2 id="app-count">Application count: {jobCount !== unfilteredItemsCount ? `${jobCount}/${unfilteredItemsCount}` :`${jobCount}`}</h2>
 
         <div id="top-part">
             <button type="button" id="create-new" onClick={() => navi("/new")}>

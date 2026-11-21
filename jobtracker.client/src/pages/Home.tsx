@@ -121,7 +121,7 @@ export default function Home() {
         <div id="home">
             { !isPageLoading ? 
                 <>
-                    <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo!.filteredRecordsCount} handleResetAll={onResetAll} allJobCount={pageInfo!.allRecordsCount}/>
+                    <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo!.filteredRecordsCount} handleResetAll={onResetAll} unfilteredItemsCount={pageInfo!.unfilteredRecordsCount}/>
                     <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.filteredRecords}/>
                     <PageButtons hasPrevPage={pageInfo!.hasPrevPage} hasNextPage={pageInfo!.hasNextPage} handlePageFlip={onPageFlip} />
                 </>

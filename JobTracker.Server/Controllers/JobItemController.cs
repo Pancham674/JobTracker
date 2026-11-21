@@ -10,7 +10,7 @@ namespace JobTracker.Server.Controllers
 	public class JobItemController(JobItemDbContext context) : ControllerBase
 	{
 		readonly JobItemDbContext _context = context;
-        public record JobPageResult(List<JobItemDTO> FilteredRecords, bool HasNextPage, bool HasPrevPage, int FilteredRecordsCount, int LastIdOfPrevPage, int AllRecordsCount);
+        public record JobPageResult(List<JobItemDTO> FilteredRecords, bool HasNextPage, bool HasPrevPage, int FilteredRecordsCount, int LastIdOfPrevPage, int UnfilteredRecordsCount);
 
         [HttpGet]
 		public async Task<JobPageResult> Get(string? myStatus, DateOnly myStartDate, DateOnly myEndDate, int myLastShownId = 0, int myPageSize = 10, string myQuery = "")
@@ -19,15 +19,15 @@ namespace JobTracker.Server.Controllers
 			Status[] statusEnums = statusArr.Cast<Status>().ToArray();
             myEndDate = myEndDate == default ? DateOnly.MaxValue : myEndDate;
 
-            //get all records with only the needed attributes and filter them by date range, query for title or company name, and status
-            var allFilteredRecords = _context.JobItems.Select(j => new JobItemDTO
-            {
-                Id = j.Id,
-                Title = j.Title,
-                Company = j.Company,
-                Status = j.Status,
-                ApplyDate = j.ApplyDate
-            })
+			//get all records with only the needed attributes and filter them by date range, query for title or company name, and status
+			var allFilteredRecords = _context.JobItems.Select(j => new JobItemDTO
+			{
+				Id = j.Id,
+				Title = j.Title,
+				Company = j.Company,
+				Status = j.Status,
+				ApplyDate = j.ApplyDate
+			})
             .Where(j => myStartDate <= j.ApplyDate && j.ApplyDate <= myEndDate &&
                 (String.IsNullOrWhiteSpace(myQuery) || j.Title.Contains(myQuery) || j.Company.Contains(myQuery)) &&
                 statusEnums.Contains(j.Status))

@@ -19,7 +19,7 @@ export interface IPageInfo {
 	hasNextPage: boolean,
 	hasPrevPage: boolean,
 	lastIdOfPrevPage: number, 
-	allRecordsCount: number
+	unfilteredRecordsCount: number
 }
 
 export interface Filters {
