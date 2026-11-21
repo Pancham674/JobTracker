@@ -32,7 +32,7 @@ export default function Home() {
 
     function onPageFlip(action: PageActions) {
         if (action === "Next") {    //current highest id is the anchor for the next page
-            pageFilters.current.lastId = pageInfo!.matchedRecords[pageInfo!.matchedRecords.length -1].id;
+            pageFilters.current.lastId = pageInfo!.filteredRecords[pageInfo!.filteredRecords.length -1].id;
             loadPageInfo(pageFilters.current);
         }
         else if (action === "Previous") {
@@ -103,7 +103,7 @@ export default function Home() {
             await deleteJobItem(jobItem!.id);
 
             //since we stay on the same page, the items after this id will go up by one
-            pageFilters.current.lastId = pageInfo!.matchedRecords[0].id -1; 
+            pageFilters.current.lastId = pageInfo!.filteredRecords[0].id -1; 
             loadPageInfo(pageFilters.current);
         }
         catch (e) {
@@ -119,10 +119,10 @@ export default function Home() {
 
     return (
         <div id="home">
-            <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo ? pageInfo.allRecordsCount : 0} handleResetAll={onResetAll} />
             { !isPageLoading ? 
                 <>
-                    <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.matchedRecords}/>
+                    <Interactables handleSearchAndFilter={searchAndFilter} jobCount={pageInfo!.filteredRecordsCount} handleResetAll={onResetAll} allJobCount={pageInfo!.allRecordsCount}/>
+                    <JobList handleJobItemClick={onJobItemClick} list={pageInfo!.filteredRecords}/>
                     <PageButtons hasPrevPage={pageInfo!.hasPrevPage} hasNextPage={pageInfo!.hasNextPage} handlePageFlip={onPageFlip} />
                 </>
                 : <h2 className="loading">Reload this page once the server has started!</h2> }                

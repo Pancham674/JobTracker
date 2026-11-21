@@ -14,11 +14,12 @@ export interface IJobItem {
 }
 
 export interface IPageInfo {
-	matchedRecords: IJobItem[],
-	allRecordsCount: number,
+	filteredRecords: IJobItem[],
+	filteredRecordsCount: number,
 	hasNextPage: boolean,
 	hasPrevPage: boolean,
-	lastIdOfPrevPage: number
+	lastIdOfPrevPage: number, 
+	allRecordsCount: number
 }
 
 export interface Filters {
