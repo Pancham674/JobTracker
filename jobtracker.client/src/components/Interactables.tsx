@@ -18,9 +18,11 @@ export default function Interactables({jobCount, handleSearchAndFilter, handleRe
             <button type="button" id="create-new" onClick={() => navi("/new")}>
                 Create new Job item
             </button>
+            <button id="toggle-filter" type="button" onClick={() => setIsFilterHidden(isHidden => !isHidden)}>
+                {`${isFilterHidden ? "Show" : "Hide"}`} filters
+            </button>
             <input type="text" id="search-query" name="search-query" placeholder="Search by title or company"/> 
             <button type="submit">Search</button>
-            <button id="toggle-filter" type="button" onClick={() => setIsFilterHidden(isHidden => !isHidden)}>{`${isFilterHidden ? "Show" : "Hide"}`} filters</button>
         </div>
 
         <div id="bottom-part" hidden={isFilterHidden}>
