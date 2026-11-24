@@ -20,4 +20,14 @@ namespace JobTracker.Server
 		[NotMapped] public required Dictionary<LinkType, string> Hyperlinks { get; set; }	//Can contain links to the company website, jobboard, etc.
 		[SwaggerIgnore, JsonIgnore] public string? HyperlinksJSON { get; set; }				//as a JSON string and not Dictionary<LinkType, string> cuz DBs cant store dictionaries </3
 	}
+
+	[NotMapped]
+    public class JobItemDTO
+    {
+        public int Id { get; set; }
+        public required string Title { get; set; }
+        public required string Company { get; set; }
+        public Status Status { get; set; }
+        public required DateOnly ApplyDate { get; set; }
+    }
 }

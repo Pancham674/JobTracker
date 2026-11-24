@@ -13,6 +13,24 @@ export interface IJobItem {
 	id: number,
 }
 
+export interface IPageInfo {
+	filteredRecords: IJobItem[],
+	filteredRecordsCount: number,
+	hasNextPage: boolean,
+	hasPrevPage: boolean,
+	lastIdOfPrevPage: number, 
+	unfilteredRecordsCount: number
+}
+
+export interface Filters {
+	startDate: string | undefined,
+	status: number[] | undefined,
+	pageSize: number | undefined,
+    lastId: number | undefined,
+	endDate: string| undefined,
+	query: string | undefined
+}
+
 export enum Status {
 	Waiting,
 	Declined,
@@ -38,7 +56,19 @@ export function convertToWorkingModelString(value: number) {
 
 export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
 
+export type PageActions = "Previous" | "Next";
+
+export type ToggleActions = "Hide" | "Show";
+
 export function convertToLinkTypeString(value: number) {
 	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];
 	return linkTypes[value];
+}
+
+export function getTodaysDate() {
+	const date = new Date();
+	const day = date.getDate().toString();
+	const month = (date.getMonth() +1).toString();
+	const todaysDate = `${date.getFullYear()}-${month.length == 1 ? 0 + month: month}-${day.length == 1 ? 0 + day: day}`;	
+	return todaysDate;
 }

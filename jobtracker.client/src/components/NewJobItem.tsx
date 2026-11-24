@@ -1,6 +1,6 @@
 import { postJobItem, getJobItem, editJobItem } from "../services/api";
 import { useParams, useNavigate } from "react-router-dom";
-import { type IJobItem } from "../Interfaces";
+import { type IJobItem, getTodaysDate } from "../Interfaces";
 import { useState, useEffect } from "react";
 import type React from "react";
 import "../css/NewJobItem.css";
@@ -167,12 +167,4 @@ export default function NewJobItem() {
             </div>
         </form>
     );
-}
-
-function getTodaysDate() {
-    const date = new Date();
-    const day = date.getDate().toString();
-    const month = (date.getMonth() +1).toString();
-    const todaysDate = `${date.getFullYear()}-${month.length == 1 ? 0 + month: month}-${day.length == 1 ? 0 + day: day}`;
-    return todaysDate;
 }

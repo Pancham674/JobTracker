@@ -1,0 +1,96 @@
+#interactables {
+    background-color: var(--primary-color-1);
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    align-self: center;
+    width: fit-content;
+    position: relative;
+}
+
+#interactables, #interactables div {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+#interactables div{
+    width: 100%;
+}
+
+#app-count {
+    border-bottom: 1px var(--primary-color-5) solid;
+    color: var(--primary-color-5);
+    font-size: 1.1rem;
+    width: stretch;
+    margin: 0;
+}
+
+#interactables label {
+    flex-direction: column;
+    display: flex;
+}
+
+#interactables label, #interactables input {
+    font-size: 0.8em;
+}
+
+
+#interactables input[type="date"] {
+    font-size: 0.7rem;
+}
+
+#status option, #page-size {
+    font-size: 0.9em;
+}
+
+#interactables button {
+    font-size: 0.65em;
+}
+
+#interactables label select, #interactables label input, #interactables button {
+    margin: 0;
+}
+
+#interactables option {
+    color: var(--primary-color-5);
+    background-color: inherit;
+    padding: 0.25em 0.5em;
+    width: stretch;
+}
+
+select#status {
+    overflow: hidden;
+    padding: 0;
+}
+
+#interactables option:checked {
+    background-color: white;
+}
+
+#interactables div#bottom-part {
+    border: 1px solid var(--primary-color-5);
+    border-top: 1px dashed var(--primary-color-5);
+    justify-content: space-around;
+    background-color: inherit;
+    padding-bottom: 0.5em;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    gap: 0;
+}
+
+#bottom-part[hidden] {
+    display: none;
+}
+
+#interactables div#dates, div#page-reset {
+    flex-direction: column;
+    width: fit-content;
+    gap: 0;
+}
+
+div#page-reset {
+    justify-content: space-around;
+    height: stretch;
+}
