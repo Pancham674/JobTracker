@@ -58,19 +58,15 @@ namespace JobTracker.Server.Controllers
 			JobItem? item = _context.JobItems.Find(id);
 			if (item == null) return NotFound();
 
-			item.Hyperlinks = JsonSerializer.Deserialize<Dictionary<LinkType, string>>(item.HyperlinksJSON!)!;
+			item.Hyperlinks = JsonSerializer.Deserialize<Dictionary<string, string>>(item.HyperlinksJSON!)!;
 			return Ok(item);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] JobItem jI)
-		{
-			if (String.IsNullOrWhiteSpace(jI?.Title)
-				|| (jI.Hyperlinks.Count <= 0 && jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value)))
-				)
-			{
-				return StatusCode((int)HttpStatusCode.Forbidden);
-			}
+		{	//there has to be at least ONE link
+			if (String.IsNullOrWhiteSpace(jI?.Title) || (jI.Hyperlinks.Count <= 0 && jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value))))
+			{ return StatusCode((int)HttpStatusCode.Forbidden); }
 
 			jI.HyperlinksJSON = JsonSerializer.Serialize(jI.Hyperlinks);
 
@@ -84,12 +80,8 @@ namespace JobTracker.Server.Controllers
 		{
 			if (jI == null || !await _context.JobItems.AnyAsync(i => i.Id == jI.Id)) return BadRequest();
 
-			if (String.IsNullOrWhiteSpace(jI.Title)
-				|| (jI.Hyperlinks.Count <= 0 && jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value)))
-				)
-			{
-				return StatusCode((int)HttpStatusCode.Forbidden);
-			}
+			if (String.IsNullOrWhiteSpace(jI.Title) || (jI.Hyperlinks.Count <= 0 && jI.Hyperlinks.All(entry => String.IsNullOrWhiteSpace(entry.Value))))
+			{ return StatusCode((int)HttpStatusCode.Forbidden); }
 
 			jI.HyperlinksJSON = JsonSerializer.Serialize(jI.Hyperlinks);
 
