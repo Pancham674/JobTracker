@@ -1,15 +1,16 @@
 import { postJobItem, getJobItem, editJobItem } from "../services/api";
-import { useParams, useNavigate } from "react-router-dom";
 import { type IJobItem, getTodaysDate } from "../Interfaces";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type React from "react";
 import "../css/NewJobItem.css";
 
 export default function NewJobItem() {
+    const [customLinks, setCustomLinks] = useState<ICustomLink[]>([createEmptyLink(1)]);
     const [jobItem, setJobItem] = useState<IJobItem>();
     const [stateStatus, setStateStatus] = useState(0);
     const [stateModel, setStateModel] = useState(0);
-
+    
     const jobId = Number(useParams().id);
     const navi = useNavigate();
     
@@ -20,6 +21,12 @@ export default function NewJobItem() {
                 setJobItem(grabbedItem);
                 setStateModel(grabbedItem.model);
                 setStateStatus(grabbedItem.status);
+                setCustomLinks(Object.entries(grabbedItem.hyperlinks).map(
+                    ([k, v], i) => 
+                    ({   id: i,
+                        title: k,
+                        source: v} as ICustomLink))
+                );
             }
         }
         loadJobItem();
@@ -33,17 +40,12 @@ export default function NewJobItem() {
        
         newItem.applyDeadline = newItem.applyDeadline ? newItem.applyDeadline: `0001-01-01`; 
 
-        if (newItem && (e.currentTarget["company-job-listing"].value.trim() 
-            || e.currentTarget["company-website"].value.trim() || e.currentTarget["job-board"].value.trim())) {
+        if (newItem.title.trim() && newItem.company.trim() && !isAnyCustomLinkEmpty(customLinks)) {
             try {
                 newItem.status = Number(newItem.status);
                 newItem.model = Number(newItem.model);
-                newItem.hyperlinks = {
-                    "Jobboard": e.currentTarget["job-board"].value,
-                    "CompanyWebsite": e.currentTarget["company-website"].value,
-                    "CompanyJobListing": e.currentTarget["company-job-listing"].value
-                }
                 newItem.travelTime = e.currentTarget["travel-time"].value;
+                newItem.hyperlinks = getHyperlinks(customLinks);
 
                 if (jobItem) {
                     newItem.id = jobId;
@@ -54,6 +56,7 @@ export default function NewJobItem() {
                 if (createMore) {       //dont leave page
                     e.currentTarget.reset();
                     e.currentTarget["create-more"].checked = true;
+                    setCustomLinks([createEmptyLink(1)]);
                 }
                 else {                  //redirect to either details or list page 
                     if (jobItem) navi(`/${jobId}`)
@@ -133,20 +136,17 @@ export default function NewJobItem() {
                 </label>
             </fieldset>
 
-            <fieldset> 
-                <legend>Hyperlinks (one required)</legend> 
-                <label htmlFor="job-board">Job board
-                    <input type="text" name="job-board" id="job-board" 
-                        placeholder="Indeed, StepStone, LinkedIn..."  defaultValue={jobItem ? jobItem.hyperlinks.Jobboard : ""}/>
-                </label>
-                <label htmlFor="company-website">Company Website
-                    <input type="text" name="company-website" id="company-website" 
-                        placeholder="Carrer or Homepage" defaultValue={jobItem ? jobItem.hyperlinks.CompanyWebsite : ""}/>
-                </label>
-                <label htmlFor="company-job-listing">Companies Job Listing
-                    <input type="text" name="company-job-listing" id="company-job-listing" 
-                        placeholder="Direct link to job" defaultValue={jobItem ? jobItem.hyperlinks.CompanyJobListing : ""}/>
-                </label>
+            <fieldset id="links"> 
+                <legend>Hyperlinks (one required)</legend>
+                { customLinks.map((cl, i) => <CustomHyperlink key={i} customLink={cl}/>) }
+                <button disabled={customLinks.length >= 5} 
+                        onClick={() => setCustomLinks([...customLinks, createEmptyLink(customLinks.length +1)])}
+                        type="button">Add more links
+                </button>
+                <button disabled={customLinks.length <= 1} 
+                        onClick={() => setCustomLinks(customLinks.slice(0, -1))} 
+                        type="button">Remove last link
+                </button>
             </fieldset>
 
             <fieldset>
@@ -168,3 +168,45 @@ export default function NewJobItem() {
         </form>
     );
 }
+function createEmptyLink(myId: number): ICustomLink { 
+    return {
+        id: myId,
+        title: "",
+        source: ""
+    }
+};
+
+//Returns true if any title or source from custom links array is empty
+function isAnyCustomLinkEmpty(icl: ICustomLink[]) {
+    return icl.find(cl => cl.title.trim() == "" || cl.source.trim() == "") != undefined;
+}
+
+function getHyperlinks(icl: ICustomLink[]) {
+    const result: Record<string, string> = {};
+    icl.forEach(cl => result[cl.title] = cl.source);
+    return result;
+}
+
+function updateLinkValues(customLink: ICustomLink, newValue: string, attrToChange: LinkAttribute) {
+    if (attrToChange === "Title") customLink.title = newValue;
+    else if (attrToChange === "Source") customLink.source = newValue;
+}
+
+function CustomHyperlink ({customLink}: {customLink: ICustomLink} ) {
+    return(
+        <>
+            <input id={`title${customLink.id}`} className="title" placeholder="Title (Company page, LinkedIn, ...)" required  
+                defaultValue={customLink.title ? customLink.title : ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Title")}/>
+            <input id={`value${customLink.id}`} className="value" placeholder="Actual link" required
+                defaultValue={customLink.source ? customLink.source: ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Source")}/>
+        </>
+    );
+}
+
+interface ICustomLink {
+    id: number,
+    title: string,
+    source: string
+}
+
+type LinkAttribute = "Title" | "Source";
