@@ -6,7 +6,7 @@ import type React from "react";
 import "../css/NewJobItem.css";
 
 export default function NewJobItem() {
-    const [customLinks, setCustomLinks] = useState<ICustomLink[]>([createEmptyLink(1)]);
+    const [customLinks, setCustomLinks] = useState<ICustomLink[]>([createEmptyLink()]);
     const [jobItem, setJobItem] = useState<IJobItem>();
     const [stateStatus, setStateStatus] = useState(0);
     const [stateModel, setStateModel] = useState(0);
@@ -56,7 +56,7 @@ export default function NewJobItem() {
                 if (createMore) {       //dont leave page
                     e.currentTarget.reset();
                     e.currentTarget["create-more"].checked = true;
-                    setCustomLinks([createEmptyLink(1)]);
+                    setCustomLinks([createEmptyLink()]);
                 }
                 else {                  //redirect to either details or list page 
                     if (jobItem) navi(`/${jobId}`)
@@ -139,14 +139,16 @@ export default function NewJobItem() {
             <fieldset id="links"> 
                 <legend>Hyperlinks (one required)</legend>
                 { customLinks.map((cl, i) => <CustomHyperlink key={i} customLink={cl}/>) }
-                <button disabled={customLinks.length >= 5} 
-                        onClick={() => setCustomLinks([...customLinks, createEmptyLink(customLinks.length +1)])}
-                        type="button">Add more links
-                </button>
-                <button disabled={customLinks.length <= 1} 
-                        onClick={() => setCustomLinks(customLinks.slice(0, -1))} 
-                        type="button">Remove last link
-                </button>
+                <div className="btns">
+                    <button disabled={customLinks.length >= 5} 
+                            onClick={() => setCustomLinks([...customLinks, createEmptyLink()])}
+                            type="button">Add more links
+                    </button>
+                    <button disabled={customLinks.length <= 1} 
+                            onClick={() => setCustomLinks(customLinks.slice(0, -1))} 
+                            type="button">Remove last link
+                    </button>
+                </div>
             </fieldset>
 
             <fieldset>
@@ -161,16 +163,15 @@ export default function NewJobItem() {
                 <input type="checkbox" name="create-more" />
             </label> }
 
-            <div id="btns">
+            <div className="btns submit-cancel">
                 <button type="button" onClick={() => window.history.back()}>Cancel</button>
                 <button type="submit">{jobItem ? "Update" : "Create"}</button>
             </div>
         </form>
     );
 }
-function createEmptyLink(myId: number): ICustomLink { 
+function createEmptyLink(): ICustomLink { 
     return {
-        id: myId,
         title: "",
         source: ""
     }
@@ -194,17 +195,20 @@ function updateLinkValues(customLink: ICustomLink, newValue: string, attrToChang
 
 function CustomHyperlink ({customLink}: {customLink: ICustomLink} ) {
     return(
-        <>
-            <input id={`title${customLink.id}`} className="title" placeholder="Title (Company page, LinkedIn, ...)" required  
-                defaultValue={customLink.title ? customLink.title : ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Title")}/>
-            <input id={`value${customLink.id}`} className="value" placeholder="Actual link" required
-                defaultValue={customLink.source ? customLink.source: ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Source")}/>
-        </>
+        <div className="custom-hyperlink">
+            <label> Title:
+                <input className="title" placeholder="Company page, LinkedIn, etc." required  
+                    defaultValue={customLink.title ? customLink.title : ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Title")}/>
+            </label>
+            <label>Source:
+                <input className="value" placeholder="https://www.linkedin.com/company" required
+                    defaultValue={customLink.source ? customLink.source: ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Source")}/>
+            </label>
+        </div>
     );
 }
 
 interface ICustomLink {
-    id: number,
     title: string,
     source: string
 }

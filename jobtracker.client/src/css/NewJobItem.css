@@ -1,9 +1,32 @@
-#btns {
-    justify-content: center;
-    display: flex;
-    gap: 1em;
+label {
+    font-size: 0.8rem;
 }
 
+.custom-hyperlink, .btns {
+    justify-content: center;
+    display: flex;
+}
+
+#links > .btns, .custom-hyperlink {
+    flex-direction: column;
+}
+
+.custom-hyperlink {
+    width: min-content;
+    flex-wrap: wrap;
+}
+
+.custom-hyperlink > label > input {
+    margin: 0;
+}
+
+#links > .btns > button {
+    width: stretch;
+}
+
+.btns.submit-cancel, #new-job-item {
+    gap: 1em;
+}
 
 form h2 {
     margin: 0;
@@ -14,7 +37,6 @@ form h2 {
     align-items: center;
     min-width: 380px;
     display: grid;
-    gap: 1em;
 }
 
 label input, label select {
@@ -37,7 +59,7 @@ fieldset {
 
 input, select, textarea, legend, #create-more {
     border: 1px solid var(--primary-color-5);
-    padding: 0.3em 1.1em;
+    padding: 0.3em 0.8em;
 }
 
 input, select, textarea {
