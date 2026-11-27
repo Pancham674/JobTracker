@@ -47,6 +47,9 @@ export default function NewJobItem() {
                 newItem.travelTime = e.currentTarget["travel-time"].value;
                 newItem.hyperlinks = getHyperlinks(customLinks);
 
+                //if true then link titles were identical, even though it shouldnt be
+                if (customLinks.length > Object.keys(newItem.hyperlinks).length) throw new Error("Please make sure that every link title is distinct from one another and try again.")
+
                 if (jobItem) {
                     newItem.id = jobId;
                     editJobItem(newItem);
@@ -65,6 +68,7 @@ export default function NewJobItem() {
             }
             catch(e) {
                 console.warn(e);
+                alert(e);
             }
         }
         else {
@@ -201,7 +205,7 @@ function CustomHyperlink ({customLink}: {customLink: ICustomLink} ) {
                     defaultValue={customLink.title ? customLink.title : ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Title")}/>
             </label>
             <label>Source:
-                <input className="value" placeholder="https://www.linkedin.com/company" required
+                <input className="value" placeholder="https://www.linkedin.com/..." required
                     defaultValue={customLink.source ? customLink.source: ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Source")}/>
             </label>
         </div>

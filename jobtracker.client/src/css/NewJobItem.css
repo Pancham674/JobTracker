@@ -17,6 +17,7 @@ label {
 }
 
 .custom-hyperlink > label > input {
+    width: 10rem;
     margin: 0;
 }
 
