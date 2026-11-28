@@ -1,4 +1,4 @@
-import { convertToLinkTypeString, convertToStatusString, convertToWorkingModelString, type IJobItem, type ToggleActions } from "../Interfaces.ts";
+import { convertToStatusString, convertToWorkingModelString, type IJobItem, type ToggleActions } from "../Interfaces.ts";
 import { useNavigate } from "react-router-dom";
 import "../css/FullJobItem.css";
 
@@ -63,14 +63,14 @@ export default function FullJobItem({toggleMe, deleteItem, jobItem}: {toggleMe: 
                     }
                     <div id="hyperlinks">
                         {
-                            Object.entries(jobItem.hyperlinks).map(([key, val], i) => {
+                            Object.entries(jobItem.hyperlinks).map(([key, val]) => {
                                 if (!val.trim()) return;
                                 return (
                                     <a key={key}
                                         className="item-value"
                                         href={val}
                                         target="_blank">
-                                        {convertToLinkTypeString(Number(i))}
+                                        {key}
                                     </a>
                                 );
                             })

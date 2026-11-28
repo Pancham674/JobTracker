@@ -1,5 +1,5 @@
 export interface IJobItem {
-	hyperlinks: Record<LinkType, string>,
+	hyperlinks: Record<string, string>,
 	applyDeadline: Date | string,
 	hyperlinksJSON: string,
 	model: WorkingModels,
@@ -54,16 +54,9 @@ export function convertToWorkingModelString(value: number) {
 	return workingModels[value];
 }
 
-export type LinkType = "Jobboard" | "CompanyWebsite" | "CompanyJobListing";
-
 export type PageActions = "Previous" | "Next";
 
 export type ToggleActions = "Hide" | "Show";
-
-export function convertToLinkTypeString(value: number) {
-	const linkTypes = ["Job Board", "Company Website", "Company Job Listing"];
-	return linkTypes[value];
-}
 
 export function getTodaysDate() {
 	const date = new Date();

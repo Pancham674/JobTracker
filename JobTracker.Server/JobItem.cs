@@ -17,7 +17,7 @@ namespace JobTracker.Server
 		public TimeSpan? TravelTime { get; set; }									//How long it'll take to arrive at the location.
 		public required DateOnly ApplyDate { get; set; } 
 		public DateOnly? ApplyDeadline { get; set; }										//How long till the job gets taken down. 
-		[NotMapped] public required Dictionary<LinkType, string> Hyperlinks { get; set; }	//Can contain links to the company website, jobboard, etc.
+		[NotMapped] public required Dictionary<string, string> Hyperlinks { get; set; }	//Can contain links to the company website, jobboard, etc.
 		[SwaggerIgnore, JsonIgnore] public string? HyperlinksJSON { get; set; }				//as a JSON string and not Dictionary<LinkType, string> cuz DBs cant store dictionaries </3
 	}
 
