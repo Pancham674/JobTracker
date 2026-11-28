@@ -55,10 +55,7 @@ export default function NewJobItem() {
                     e.currentTarget.reset();
                     e.currentTarget["create-more"].checked = true;
                 }
-                else {                  //redirect to either details or list page 
-                    if (jobItem) navi(`/${jobId}`)
-                    else navi("/");
-                }
+                else navi("/");
             }
             catch(e) {
                 console.warn(e);
@@ -125,7 +122,7 @@ export default function NewJobItem() {
                 </label>
 
                 <label htmlFor="location">Work location
-                    <input type="text" name="location" id="location" />
+                    <input type="text" name="location" id="location" placeholder={"Saints str.66 Hollow 2763"} />
                 </label>
 
                 <label htmlFor="travel-time">Travel time
