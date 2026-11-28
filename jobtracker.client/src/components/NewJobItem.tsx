@@ -140,10 +140,9 @@ export default function NewJobItem() {
                 </label>
             </fieldset>
 
-            <fieldset id="links"> 
-                <legend>Hyperlinks (one required)</legend>
-                { customLinks.map((cl, i) => <CustomHyperlink key={i} customLink={cl}/>) }
-                <div className="btns">
+            <fieldset id="hyperlinks"> 
+                <legend>Hyperlinks (5 max.)</legend>
+                <div className="btns links">
                     <button disabled={customLinks.length >= 5} 
                             onClick={() => setCustomLinks([...customLinks, createEmptyLink()])}
                             type="button">Add more links
@@ -152,6 +151,9 @@ export default function NewJobItem() {
                             onClick={() => setCustomLinks(customLinks.slice(0, -1))} 
                             type="button">Remove last link
                     </button>
+                </div>
+                <div id="custom-links">
+                    { customLinks.map((cl, i) => <CustomHyperlink key={i} customLink={cl}/>) }
                 </div>
             </fieldset>
 
@@ -201,7 +203,7 @@ function CustomHyperlink ({customLink}: {customLink: ICustomLink} ) {
     return(
         <div className="custom-hyperlink">
             <label> Title:
-                <input className="title" placeholder="Company page, LinkedIn, etc." required  
+                <input className="title" placeholder="LinkedIn, Glassdoor, etc." required  
                     defaultValue={customLink.title ? customLink.title : ""} onChange={(e) => updateLinkValues(customLink, e.currentTarget.value, "Title")}/>
             </label>
             <label>Source:

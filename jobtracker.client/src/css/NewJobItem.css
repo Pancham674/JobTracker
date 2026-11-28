@@ -1,3 +1,27 @@
+fieldset#hyperlinks {
+    justify-content: left;
+    min-width: 0;
+    height: 80%;
+    gap: 1em;
+}
+
+.btns.links {
+    justify-content: space-around;
+    padding-left: 1em;
+    flex-shrink: 0;
+    height: 100%;
+    gap: 1em;
+}
+
+#custom-links {
+    scrollbar-width: thin;
+    align-items: center;
+    margin-right: 1em;
+    overflow-x: auto;
+    display: flex;
+    gap: 1em;
+}
+
 label {
     font-size: 0.8rem;
 }
@@ -7,7 +31,7 @@ label {
     display: flex;
 }
 
-#links > .btns, .custom-hyperlink {
+.btns.links, .custom-hyperlink {
     flex-direction: column;
 }
 
@@ -21,8 +45,9 @@ label {
     margin: 0;
 }
 
-#links > .btns > button {
+.btns.links > button {
     width: stretch;
+    margin: 0;
 }
 
 .btns.submit-cancel, #new-job-item {
